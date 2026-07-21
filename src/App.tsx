@@ -100,10 +100,18 @@ export default function App() {
       if (trimmed.startsWith('|')) {
         if (trimmed.includes('---')) return null;
         const cols = trimmed.split('|').filter(c => c.trim()).map(c => c.trim());
+        const isHeader = trimmed.toLowerCase().includes('stage') || trimmed.toLowerCase().includes('value') || trimmed.toLowerCase().includes('description');
         return (
-          <div key={lineIdx} className="grid grid-cols-3 gap-2 py-1 text-[11px] border-b border-slate-200 dark:border-slate-800">
+          <div 
+            key={lineIdx} 
+            className={`grid grid-cols-3 gap-2 px-3.5 py-2.5 text-[10.5px] ${
+              isHeader 
+                ? "bg-slate-900/90 font-bold border-b border-slate-800 text-slate-200 uppercase tracking-wider rounded-t-xl" 
+                : "border-b border-slate-850/60 text-slate-350 hover:bg-slate-900/10"
+            }`}
+          >
             {cols.map((col, colIdx) => (
-              <span key={colIdx} className={colIdx === 0 ? "font-bold text-slate-800 dark:text-slate-200" : "text-slate-550 dark:text-slate-400"}>
+              <span key={colIdx} className={colIdx === 0 && !isHeader ? "font-bold text-slate-200" : ""}>
                 {parseInlineBold(col)}
               </span>
             ))}
@@ -546,6 +554,19 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
               title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
             >
               {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
+            </button>
+
+            {/* Header Settings Gear */}
+            <button 
+              onClick={() => setCurrentTab('settings')}
+              className={`p-2 rounded-lg border transition-all ${
+                currentTab === 'settings' 
+                  ? 'bg-brand-600 text-white border-brand-600 shadow shadow-brand-600/10' 
+                  : 'border-slate-800 bg-slate-900/30 hover:bg-slate-800 text-slate-400 hover:text-white'
+              }`}
+              title="System Configuration Settings"
+            >
+              <SettingsIcon className="w-4 h-4" />
             </button>
 
             <button 
