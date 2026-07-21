@@ -503,16 +503,6 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
           </nav>
         </div>
 
-        {/* Profile Footer */}
-        <div className="p-4 border-t border-slate-800/60 flex items-center space-x-3 bg-slate-900/10 rounded-b-2xl">
-          <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-xs text-white">
-            AA
-          </div>
-          <div className="flex-1 min-w-0 text-left">
-            <p className="text-xs font-bold text-slate-200 truncate">Abishek A</p>
-            <p className="text-[10px] text-slate-400 font-medium truncate">Jain University</p>
-          </div>
-        </div>
       </aside>
 
       {/* Main Workspace Area */}
