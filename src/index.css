@@ -1,0 +1,229 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light Theme Variables */
+  --slate-950: #F6F8FC;       /* App Background */
+  --slate-900: #F1F5F9;       /* Secondary Background / Surfaces */
+  --slate-850: #CBD5E1;       /* Dividers */
+  --slate-800: #E2E8F0;       /* Borders */
+  --slate-700: #E2E8F0;       /* Borders */
+  --slate-600: #CBD5E1;       /* Disabled Text / Elements */
+  --slate-500: #94A3B8;       /* Muted Text */
+  --slate-400: #64748B;       /* Secondary Text */
+  --slate-300: #64748B;       /* Secondary Text */
+  --slate-200: #0F172A;       /* Primary Text */
+  --slate-100: #0F172A;       /* Primary Text */
+  --slate-50: #0F172A;        /* Primary Text */
+
+  /* Brand Colors */
+  --brand-600: #5B5BD6;       /* Primary Indigo */
+  --brand-500: #4F46E5;       /* Primary Hover */
+  --brand-400: #06B6D4;       /* Accent Electric Cyan */
+  --indigo-600: #7C3AED;      /* Secondary Royal Purple */
+  --indigo-500: #7C3AED;
+
+  /* Status Colors */
+  --emerald-500: #22C55E;     /* Success */
+  --amber-500: #F59E0B;       /* Warning */
+  --rose-500: #EF4444;        /* Error */
+  --blue-500: #3B82F6;        /* Info */
+
+  /* Structural Overrides */
+  --card-bg: #FFFFFF;
+  --card-border: #E2E8F0;
+  --sidebar-bg: #0F172A;
+  --sidebar-border: rgba(255, 255, 255, 0.05);
+  --chat-bg: #FFFFFF;
+  --header-bg: #FFFFFF;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+.dark {
+  /* Dark Theme Variables */
+  --slate-950: #020617;       /* Dark Background */
+  --slate-900: #111827;       /* Surface */
+  --slate-850: #334155;       /* Borders / Dividers */
+  --slate-800: #334155;       /* Borders */
+  --slate-700: #334155;
+  --slate-600: #334155;
+  --slate-500: #94A3B8;       /* Muted Text */
+  --slate-400: #CBD5E1;       /* Secondary Text */
+  --slate-300: #CBD5E1;       /* Secondary Text */
+  --slate-200: #F8FAFC;       /* Primary Text */
+  --slate-100: #F8FAFC;       /* Primary Text */
+  --slate-50: #F8FAFC;
+
+  /* Brand Colors remain same */
+  --brand-600: #5B5BD6;
+  --brand-500: #4F46E5;
+  --brand-400: #06B6D4;
+  --indigo-600: #7C3AED;
+  --indigo-500: #7C3AED;
+
+  /* Status Colors remain same */
+  --emerald-500: #22C55E;
+  --amber-500: #F59E0B;
+  --rose-500: #EF4444;
+  --blue-500: #3B82F6;
+
+  /* Structural Overrides */
+  --card-bg: #1E293B;         /* Surface Card */
+  --card-border: #334155;
+  --sidebar-bg: #020617;      /* Sidebar */
+  --sidebar-border: #334155;
+  --chat-bg: #020617;
+  --header-bg: #111827;
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+}
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-50 font-sans antialiased overflow-x-hidden transition-colors duration-200;
+  }
+
+  /* Custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--slate-800);
+    border-radius: 9999px;
+  }
+}
+
+/* 1. Sidebar Styling Override */
+aside {
+  background-color: var(--sidebar-bg) !important;
+  border-right: 1px solid var(--sidebar-border) !important;
+  transition: background-color 0.2s ease-in-out !important;
+}
+
+aside button {
+  color: #CBD5E1 !important;
+}
+
+aside button:hover {
+  color: #FFFFFF !important;
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+aside button.bg-brand-600\/90, 
+aside button.bg-brand-600 {
+  background-color: #5B5BD6 !important;
+  color: #FFFFFF !important;
+}
+
+aside button.bg-brand-600\/90 svg,
+aside button.bg-brand-600 svg {
+  color: #FFFFFF !important;
+}
+
+/* 2. Card Styling Override */
+.glass-card {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: var(--shadow-sm) !important;
+  border-radius: 16px !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-1.5px) !important;
+  box-shadow: var(--shadow-md) !important;
+  border-color: rgba(91, 91, 214, 0.2) !important;
+}
+
+.dark .glass-card-hover:hover {
+  border-color: rgba(91, 91, 214, 0.35) !important;
+}
+
+/* 3. Header Override */
+header {
+  background-color: var(--header-bg) !important;
+  border-bottom: 1px solid var(--card-border) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* 4. Table Customizations */
+table {
+  background-color: var(--card-bg) !important;
+}
+
+tr {
+  transition: background-color 150ms ease-in-out;
+}
+
+thead tr {
+  background-color: var(--slate-900) !important;
+  border-bottom: 1px solid var(--card-border) !important;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--card-border) !important;
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.01) !important;
+}
+
+.dark tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.01) !important;
+}
+
+tbody tr:hover {
+  background-color: var(--slate-900) !important;
+}
+
+/* 5. AI Conversation Pane Overrides */
+.bg-slate-950.flex-1.flex.flex-col.min-w-0 {
+  background-color: var(--chat-bg) !important;
+}
+
+/* AI Chat response boxes */
+.bg-slate-900\/50.text-slate-300 {
+  background-color: var(--slate-900) !important;
+  border-color: var(--card-border) !important;
+  color: var(--slate-200) !important;
+}
+
+/* 6. Settings Page Inputs */
+input[type="password"], input[type="text"] {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  color: var(--slate-200) !important;
+  transition: border-color 0.2s ease-in-out;
+}
+
+input[type="password"]:focus, input[type="text"]:focus {
+  border-color: #5B5BD6 !important;
+}
+
+/* Clean Markdown Tables in Chat */
+.grid.grid-cols-3.gap-2.py-1.text-xs.border-b.border-slate-850 {
+  border-color: var(--card-border) !important;
+}
+
+/* Recharts visual styles */
+.recharts-cartesian-grid-horizontal line, 
+.recharts-cartesian-grid-vertical line {
+  stroke: var(--card-border) !important;
+  stroke-opacity: 0.5;
+}
+.recharts-text {
+  fill: var(--slate-400) !important;
+}
+
+/* Confetti alignment */
+canvas {
+  z-index: 99999 !important;
+}
