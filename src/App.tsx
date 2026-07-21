@@ -319,6 +319,34 @@ Our current pipeline is heavily weighted in the **Won** stage (₹${((stageCount
 Please set a **Gemini API Key** in the **Settings** tab if you would like full generative reasoning on your dataset.`;
   };
 
+  // CSV Exporter for Live Deals Pipeline
+  const handleExportCSV = () => {
+    const headers = ["Deal Name", "Customer", "Sector", "Value (INR)", "Stage", "Probability (%)", "Close Date", "Owner", "Notes"];
+    const rows = deals.map(deal => [
+      `"${deal.name.replace(/"/g, '""')}"`,
+      `"${deal.customer.replace(/"/g, '""')}"`,
+      `"${deal.sector.replace(/"/g, '""')}"`,
+      deal.value,
+      `"${deal.stage}"`,
+      deal.probability,
+      `"${deal.closeDate || ''}"`,
+      `"${deal.owner.replace(/"/g, '""')}"`,
+      `"${(deal.notes || '').replace(/"/g, '""')}"`
+    ]);
+    
+    const csvContent = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `skylark_deals_pipeline_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    confetti({ particleCount: 50, spread: 80 });
+  };
+
   // AI Send Message
   const handleSendMessage = async (text: string) => {
     if (!text.trim()) return;
@@ -1351,10 +1379,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   <p className="text-xs text-slate-500 mt-1">Aggregated target KPIs and sales pipelines forecasts</p>
                 </div>
                 <button 
-                  onClick={() => {
-                    confetti({ particleCount: 50, spread: 80 });
-                    alert("Dashboard summary data copied to clipboard!");
-                  }}
+                  onClick={handleExportCSV}
                   className="flex items-center space-x-1.5 px-3 py-2 rounded-lg border border-slate-800 hover:bg-slate-900 text-xs font-bold text-slate-400 hover:text-slate-200 transition-colors self-start sm:self-center"
                 >
                   <Download className="w-3.5 h-3.5" />
