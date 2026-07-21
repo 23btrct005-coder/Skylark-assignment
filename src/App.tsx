@@ -770,6 +770,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                         <Tooltip 
                           contentStyle={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '12px' }}
                           labelStyle={{ color: 'var(--slate-100)', fontWeight: 'bold' }}
+                          itemStyle={{ color: 'var(--slate-300)', fontSize: '11px' }}
                         />
                         <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                           {sectorData.map((entry, index) => (
@@ -1390,7 +1391,11 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                         <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
                         <XAxis dataKey="name" stroke="#64748b" fontSize={11} tickLine={false} />
                         <YAxis stroke="#64748b" fontSize={11} tickLine={false} axisLine={false} />
-                        <Tooltip contentStyle={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '12px' }} />
+                        <Tooltip 
+                          contentStyle={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '12px' }} 
+                          labelStyle={{ color: 'var(--slate-100)', fontWeight: 'bold' }}
+                          itemStyle={{ color: 'var(--slate-300)', fontSize: '11px' }}
+                        />
                         <Area type="monotone" dataKey="value" stroke="#5B5BD6" fill="rgba(91, 91, 214, 0.03)" strokeWidth={2} />
                       </AreaChart>
                     </ResponsiveContainer>
