@@ -1452,8 +1452,8 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
               </div>
 
               {/* Reports builder */}
-              <div className="glass-card p-6 rounded-2xl max-w-3xl mx-auto space-y-8 bg-slate-900/10">
-                <div className="flex items-center justify-between border-b border-slate-850/60 pb-4">
+              <div id="printable-report" className="glass-card p-8 rounded-2xl max-w-3xl mx-auto space-y-8 bg-slate-900/10">
+                <div className="flex items-center justify-between border-b border-slate-850/60 pb-4 no-print">
                   <div className="flex items-center space-x-3 text-left">
                     <FileText className="w-5 h-5 text-brand-600" />
                     <div>
@@ -1470,18 +1470,18 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   </button>
                 </div>
 
-                <div className="space-y-6 text-xs text-slate-300 leading-relaxed text-left">
+                <div className="space-y-6 text-xs text-slate-350 leading-relaxed text-left">
                   <div>
                     <h4 className="text-[10px] font-bold text-slate-250 uppercase tracking-wider mb-2 font-mono">1. Executive Summary</h4>
                     <p>
-                      This reporting cycle outlines the transition of several key pilot surveys into contract execution. Skylark Drones' core platforms recorded total completed revenue of **₹10.60 L**, driven by volume assessments in the mining division. While pipeline strength remains robust at **₹6.10 L**, operational delays in our highway mapping corridors highlight key equipment logistics vulnerabilities that require mitigation.
+                      This reporting cycle outlines the transition of several key pilot surveys into contract execution. Skylark Drones' core platforms recorded total completed revenue of **₹{(closedWonRevenue / 100000).toFixed(2)} Lakhs**, driven by volume assessments in the mining division. While pipeline strength remains robust at **₹{(totalPipelineValue / 100000).toFixed(2)} Lakhs**, operational delays in our highway mapping corridors highlight key equipment logistics vulnerabilities that require mitigation.
                     </p>
                   </div>
                   
                   <div>
                     <h4 className="text-[10px] font-bold text-slate-250 uppercase tracking-wider mb-2 font-mono">2. Pipeline Analysis</h4>
                     <p>
-                      Active negotiations represent **₹6.10 L** in pipeline volume. The renewables sector remains our most active sector, representing 52% of pipeline value. Contract conversions remain healthy with a 78% win rate over 90 days.
+                      Active negotiations represent **₹{(totalPipelineValue / 100000).toFixed(2)} Lakhs** in pipeline volume. The renewables sector remains our most active sector, representing 52% of pipeline value. Contract conversions remain healthy with a 78% win rate over 90 days.
                     </p>
                   </div>
 
@@ -1492,7 +1492,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                       <div>
                         <p className="font-bold text-slate-200">NHAI Corridor Mapping Project Delivery (ID: wo3)</p>
                         <p className="mt-1 text-[11px] text-rose-450">
-                          Equipment failure has halted Day 3 LiDAR operations. Standard replacement dispatch timeline stands at 15 days, impacting first phase milestone collections (₹4,00,000 billing schedule).
+                          Equipment failure has halted Day 3 LiDAR operations. Standard replacement dispatch timeline stands at 15 days, impacting first phase milestone collections (₹12,00,000 contract schedule).
                         </p>
                       </div>
                     </div>
@@ -1502,7 +1502,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                     <h4 className="text-[10px] font-bold text-slate-250 uppercase tracking-wider mb-2 font-mono">4. Action Items & Next Steps</h4>
                     <ul className="list-decimal ml-4 space-y-1.5 text-slate-400">
                       <li>Authorize backup LiDAR sensor allocation dispatch from Bangalore HQ immediately.</li>
-                      <li>Finalize commercial contract negotiations for the **Adani Wind Farm Mapping** (₹320k, currently in legal).</li>
+                      <li>Finalize commercial contract negotiations for the **Adani Wind Farm Mapping** (₹3,20,000, currently in final legal review).</li>
                       <li>Address flagged data missing entries (missing close dates/comments) on Monday.com boards.</li>
                     </ul>
                   </div>
