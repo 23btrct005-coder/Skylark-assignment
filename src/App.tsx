@@ -1318,7 +1318,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 <div className="glass-card p-6 rounded-2xl space-y-6 text-left">
                   <div className="text-xs font-semibold text-slate-400">Quarterly Target Schedules</div>
                   <div className="space-y-4">
-                    {workOrders.map((wo, index) => (
+                    {filteredWorkOrders.map((wo) => (
                       <div key={wo.id} className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-850/60 pb-3">
                         <div className="w-64">
                           <h4 className="text-xs font-bold text-slate-200">{wo.associatedDeal}</h4>
@@ -1328,12 +1328,16 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                           <span className="text-[10px] text-slate-500 font-mono w-16">Q3-26</span>
                           <div className="flex-1 bg-slate-900/50 h-3 rounded-full overflow-hidden relative border border-slate-800">
                             <div 
-                              className={`h-full rounded-full ${
-                                wo.status === 'Completed' ? 'bg-emerald-500' :
-                                wo.status === 'Delayed' ? 'bg-rose-500' :
-                                wo.status === 'In Progress' ? 'bg-blue-500' : 'bg-slate-600'
+                              className={`h-full rounded-full transition-all duration-500 ${
+                                wo.status === 'Completed' ? 'bg-emerald-500 shadow-sm shadow-emerald-500/20' :
+                                wo.status === 'Delayed' ? 'bg-rose-500 shadow-sm shadow-rose-500/20 animate-pulse' :
+                                wo.status === 'In Progress' ? 'bg-blue-500 shadow-sm shadow-blue-500/20' : 'bg-slate-600'
                               }`} 
-                              style={{ width: `${index % 2 === 0 ? '70%' : '45%'}`, marginLeft: `${index * 8}%` }}
+                              style={{ 
+                                width: wo.status === 'Completed' ? '100%' :
+                                       wo.status === 'In Progress' ? '65%' :
+                                       wo.status === 'Delayed' ? '40%' : '15%'
+                              }}
                             ></div>
                           </div>
                           <span className="text-[10px] text-slate-400 font-mono w-20 text-right">{wo.targetEndDate}</span>
