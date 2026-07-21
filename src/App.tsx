@@ -915,7 +915,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                             <div className={`max-w-3xl rounded-2xl p-4.5 text-xs leading-relaxed ${
                               msg.sender === 'user'
                                 ? 'bg-brand-600 text-white shadow-md shadow-brand-600/5'
-                                : 'bg-slate-900/40 text-slate-200 border border-slate-850/60 dark:border-slate-800/60 shadow-sm'
+                                : 'bg-slate-900/50 dark:bg-slate-900/40 text-slate-200 shadow-sm'
                             }`}>
                               <div className="prose prose-invert max-w-none break-words">
                                 {formatMessageText(msg.text)}
@@ -936,7 +936,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Skylark BI Assistant</span>
                           </div>
                           <div className="flex">
-                            <div className="bg-slate-900/40 border border-slate-805/60 dark:border-slate-800/60 rounded-2xl p-4 max-w-sm">
+                            <div className="bg-slate-900/50 dark:bg-slate-900/40 rounded-2xl p-4 max-w-sm">
                               <div className="flex items-center space-x-1.5">
                                 <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '0ms' }}></span>
                                 <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '150ms' }}></span>
