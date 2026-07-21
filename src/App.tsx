@@ -30,7 +30,9 @@ import {
   Info,
   ExternalLink,
   Kanban,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -466,8 +468,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
               { id: 'workorders', label: 'Work Orders', icon: ClipboardList },
               { id: 'analytics', label: 'Visual Analytics', icon: BarChart3 },
               { id: 'reports', label: 'Executive Reports', icon: FileText },
-              { id: 'dataquality', label: 'Data Quality', icon: Database, alert: missingValuesCount > 0 },
-              { id: 'settings', label: 'Settings & Integrations', icon: SettingsIcon }
+              { id: 'dataquality', label: 'Data Quality', icon: Database, alert: missingValuesCount > 0 }
             ].map(item => {
               const Icon = item.icon;
               const isActive = currentTab === item.id;
@@ -546,6 +547,15 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
               {unreadNotifications > 0 && (
                 <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-brand-600"></span>
               )}
+            </button>
+
+            {/* Header Theme Toggler */}
+            <button 
+              onClick={() => setDarkMode(!darkMode)}
+              className="p-2 rounded-lg border border-slate-800 bg-slate-900/30 hover:bg-slate-800 text-slate-400 hover:text-white transition-all"
+              title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
             </button>
 
             <button 
