@@ -161,7 +161,10 @@ export default function App() {
   const [activities] = useState(recentActivity);
   
   // Settings & Configuration
-  const [mondayToken, setMondayToken] = useState<string>(localStorage.getItem('mondayToken') || '');
+  const [mondayToken, setMondayToken] = useState<string>(
+    localStorage.getItem('mondayToken') || 
+    'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjY4NDg2MTIxNiwiYWFpIjoxMSwidWlkIjoxMTA0NzA1NTQsImlhZCI6IjIwMjYtMDctMjFUMDg6NDM6NDkuNzUzWiIsInBlciI6Im1lOndyaXRlIiwiYWN0aWQiOjM2MTMxMjY2LCJyZ24iOiJhcHNlMiJ9.I9pTDQMFtClUyL6bww979zZwsgYQ5wKrerOIhZ2xfBI'
+  );
   const [geminiApiKey, setGeminiApiKey] = useState<string>(localStorage.getItem('geminiApiKey') || '');
   const [syncStatus] = useState<'connected' | 'disconnected'>('connected');
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
