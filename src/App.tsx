@@ -583,20 +583,6 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
             >
               {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
             </button>
-
-            {/* Header Settings Gear */}
-            <button 
-              onClick={() => setCurrentTab('settings')}
-              className={`p-2 rounded-lg border transition-all ${
-                currentTab === 'settings' 
-                  ? 'bg-brand-600 text-white border-brand-600 shadow shadow-brand-600/10' 
-                  : 'border-slate-800 bg-slate-900/30 hover:bg-slate-800 text-slate-400 hover:text-white'
-              }`}
-              title="System Configuration Settings"
-            >
-              <SettingsIcon className="w-4 h-4" />
-            </button>
-
             <button 
               onClick={handleManualSync}
               disabled={isSyncing}
@@ -1643,173 +1629,6 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
 
             </div>
           )}
-
-          {/* TAB 8: SETTINGS & INTEGRATIONS */}
-          {currentTab === 'settings' && (
-            <div className="max-w-7xl mx-auto space-y-6 animate-slide-up">
-              
-              {/* Header */}
-              <div className="border-b border-slate-850/60 pb-6 text-left">
-                <h1 className="text-xl font-bold tracking-tight text-slate-100">System Integration Settings</h1>
-                <p className="text-xs text-slate-500 mt-1">Configure credentials, refresh intervals, and API endpoints</p>
-              </div>
-
-              {/* 2-Column Responsive Dashboard Layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
-                
-                {/* Left Side: Category Navigator (Span 1) */}
-                <div className="lg:col-span-1 space-y-2">
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-3 block px-3">Settings Categories</div>
-                  {[
-                    { id: 'api', label: 'API & Model Configuration', desc: 'Monday token and Gemini credentials', icon: Key },
-                    { id: 'sync', label: 'Synchronization Settings', desc: 'Auto refresh rate and sync settings', icon: RefreshCw },
-                    { id: 'appearance', label: 'Appearance & Theme', desc: 'Toggle light and dark layouts', icon: Palette }
-                  ].map(sec => {
-                    const Icon = sec.icon;
-                    const isSecActive = settingsActiveSection === sec.id;
-                    return (
-                      <button
-                        key={sec.id}
-                        onClick={() => setSettingsActiveSection(sec.id as any)}
-                        className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-start space-x-3.5 group ${
-                          isSecActive 
-                            ? 'border-brand-600 bg-brand-600/5 text-slate-100 shadow-sm' 
-                            : 'border-slate-850 bg-slate-900/10 hover:border-slate-705 text-slate-400 hover:text-slate-200'
-                        }`}
-                      >
-                        <Icon className={`w-5 h-5 shrink-0 mt-0.5 ${isSecActive ? 'text-brand-600' : 'text-slate-500 group-hover:text-slate-400'}`} />
-                        <div>
-                          <p className="text-xs font-bold text-slate-200">{sec.label}</p>
-                          <p className="text-[10px] text-slate-500 mt-0.5">{sec.desc}</p>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Right Side: Configuration Cards (Span 2) */}
-                <div className="lg:col-span-2 space-y-6">
-                  
-                  {/* Category A: API & Credentials */}
-                  {settingsActiveSection === 'api' && (
-                    <div className="glass-card p-6 rounded-2xl space-y-5">
-                      <div>
-                        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200 border-b border-slate-850 pb-2">API & Model Configuration</h3>
-                        <p className="text-[10px] text-slate-500 mt-1">Access tokens required for dynanmic background synchronization</p>
-                      </div>
-                      
-                      {/* Monday API Token */}
-                      <div className="space-y-2">
-                        <label className="text-xs font-semibold text-slate-350 block">Monday.com Developer Personal Token</label>
-                        <div className="relative">
-                          <Key className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-500" />
-                          <input
-                            type="password"
-                            value={mondayToken}
-                            onChange={(e) => {
-                              setMondayToken(e.target.value);
-                              localStorage.setItem('mondayToken', e.target.value);
-                            }}
-                            placeholder="Paste monday.com API v2 token..."
-                            className="w-full pl-10 pr-4 py-3 rounded-xl focus:ring-1 focus:ring-brand-600 focus:border-brand-600 text-xs"
-                          />
-                        </div>
-                        <p className="text-[10px] text-slate-500 leading-relaxed">
-                          Used to pull items dynamically from your Monday boards. Retrieve this token from Monday.com &gt; Avatar &gt; Developers &gt; My Developer Tokens.
-                        </p>
-                      </div>
-
-                      {/* Gemini API Key */}
-                      <div className="space-y-2">
-                        <label className="text-xs font-semibold text-slate-350 block">Google Gen AI Gemini API Key</label>
-                        <div className="relative">
-                          <Sparkles className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-500" />
-                          <input
-                            type="password"
-                            value={geminiApiKey}
-                            onChange={(e) => {
-                              setGeminiApiKey(e.target.value);
-                              localStorage.setItem('geminiApiKey', e.target.value);
-                            }}
-                            placeholder="Paste Google AI Studio API Key..."
-                            className="w-full pl-10 pr-4 py-3 rounded-xl focus:ring-1 focus:ring-brand-600 focus:border-brand-600 text-xs"
-                          />
-                        </div>
-                        <p className="text-[10px] text-slate-500 leading-relaxed">
-                          Enables live conversational reasoning on your Monday boards using the *gemini-1.5-flash* model. Leave blank to run offline simulation.
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Category B: Synchronization options */}
-                  {settingsActiveSection === 'sync' && (
-                    <div className="glass-card p-6 rounded-2xl space-y-5">
-                      <div>
-                        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200 border-b border-slate-850 pb-2">Auto Synchronization Options</h3>
-                        <p className="text-[10px] text-slate-500 mt-1">Configure background database sync protocols</p>
-                      </div>
-                      
-                      <div className="flex items-center justify-between text-xs py-1">
-                        <div>
-                          <p className="font-semibold text-slate-200">Webhook Syncing</p>
-                          <p className="text-[10px] text-slate-500 mt-0.5">Auto-refresh database state when a cell is updated on Monday</p>
-                        </div>
-                        <span className="w-12 h-6 rounded-full bg-brand-600/30 border border-brand-600/40 p-0.5 flex justify-end cursor-pointer">
-                          <span className="w-4 h-4 rounded-full bg-brand-600 shadow"></span>
-                        </span>
-                      </div>
-
-                      <div className="flex items-center justify-between text-xs pt-4 border-t border-slate-850 py-1">
-                        <div>
-                          <p className="font-semibold text-slate-200">Clear Integration Cache</p>
-                          <p className="text-[10px] text-slate-500 mt-0.5">Flush saved responses, reset Board schemas and trigger fresh sync</p>
-                        </div>
-                        <button 
-                          onClick={() => {
-                            alert("Cache successfully flushed.");
-                            confetti({ particleCount: 15 });
-                          }}
-                          className="px-3.5 py-2 border border-slate-800 hover:bg-slate-900 text-slate-350 font-bold rounded-lg transition-colors text-xs"
-                        >
-                          Clear Cache
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Category C: Appearance Preference */}
-                  {settingsActiveSection === 'appearance' && (
-                    <div className="glass-card p-6 rounded-2xl space-y-5">
-                      <div>
-                        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200 border-b border-slate-850 pb-2">Appearance Settings</h3>
-                        <p className="text-[10px] text-slate-500 mt-1">Customize UI layout colors and themes</p>
-                      </div>
-                      
-                      <div className="flex items-center justify-between text-xs py-1">
-                        <div>
-                          <p className="font-semibold text-slate-200">Dark Mode Theme</p>
-                          <p className="text-[10px] text-slate-500 mt-0.5">Toggle between standard light and professional slate dark themes</p>
-                        </div>
-                        <button
-                          onClick={() => setDarkMode(!darkMode)}
-                          className={`w-12 h-6 rounded-full p-0.5 transition-all flex items-center ${
-                            darkMode ? 'bg-brand-600 justify-end' : 'bg-slate-300 justify-start'
-                          }`}
-                        >
-                          <span className="w-4 h-4 rounded-full bg-white shadow"></span>
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                </div>
-
-              </div>
-
-            </div>
-          )}
-
         </main>
 
       </div>
@@ -1853,7 +1672,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
               <input
                 type="text"
                 autoFocus
-                placeholder="Type a command or destination (e.g. dashboard, chat, settings)..."
+                placeholder="Type a command or destination (e.g. dashboard, chat, deals)..."
                 onChange={(e) => {
                   const cmd = e.target.value.toLowerCase();
                   if (cmd === 'dashboard') { setCurrentTab('dashboard'); setCommandPaletteOpen(false); }
@@ -1862,7 +1681,6 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   if (cmd === 'workorders') { setCurrentTab('workorders'); setCommandPaletteOpen(false); }
                   if (cmd === 'analytics') { setCurrentTab('analytics'); setCommandPaletteOpen(false); }
                   if (cmd === 'reports') { setCurrentTab('reports'); setCommandPaletteOpen(false); }
-                  if (cmd === 'settings') { setCurrentTab('settings'); setCommandPaletteOpen(false); }
                 }}
                 className="w-full bg-transparent focus:outline-none text-xs text-slate-200 placeholder-slate-500"
               />
@@ -1879,8 +1697,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 { label: "Open AI Assistant Workspace", action: () => setCurrentTab('chat') },
                 { label: "Search Deals Module", action: () => setCurrentTab('deals') },
                 { label: "Sync Monday.com board status", action: () => handleManualSync() },
-                { label: "Audit Data Quality Health", action: () => setCurrentTab('dataquality') },
-                { label: "Open API Integration Settings", action: () => setCurrentTab('settings') }
+                { label: "Audit Data Quality Health", action: () => setCurrentTab('dataquality') }
               ].map((cmd, idx) => (
                 <button
                   key={idx}
