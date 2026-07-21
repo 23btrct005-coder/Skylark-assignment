@@ -912,7 +912,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                           
                           {/* Message Card */}
                           <div className={`flex ${msg.sender === 'user' ? 'justify-end' : ''}`}>
-                            <div className={`max-w-3xl rounded-2xl p-4.5 text-xs leading-relaxed ${
+                            <div className={`max-w-3xl rounded-2xl py-3.5 px-5 text-xs leading-relaxed ${
                               msg.sender === 'user'
                                 ? 'bg-brand-600 text-white shadow-md shadow-brand-600/5'
                                 : 'bg-slate-900/50 dark:bg-slate-900/40 text-slate-200 shadow-sm'
@@ -1731,7 +1731,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                           <p className="text-[10px] text-slate-500 mt-0.5">Auto-refresh database state when a cell is updated on Monday</p>
                         </div>
                         <span className="w-12 h-6 rounded-full bg-brand-600/30 border border-brand-600/40 p-0.5 flex justify-end cursor-pointer">
-                          <span className="w-4.5 h-4.5 rounded-full bg-brand-600 shadow"></span>
+                          <span className="w-4 h-4 rounded-full bg-brand-600 shadow"></span>
                         </span>
                       </div>
 
@@ -1772,7 +1772,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                             darkMode ? 'bg-brand-600 justify-end' : 'bg-slate-300 justify-start'
                           }`}
                         >
-                          <span className="w-4.5 h-4.5 rounded-full bg-white shadow"></span>
+                          <span className="w-4 h-4 rounded-full bg-white shadow"></span>
                         </button>
                       </div>
                     </div>
@@ -1887,7 +1887,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 onClick={() => setSelectedDeal(null)}
                 className="p-1 rounded hover:bg-slate-800 text-slate-500 hover:text-slate-100"
               >
-                <X className="w-4.5 h-4.5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
             
@@ -1976,7 +1976,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 onClick={() => setSelectedWorkOrder(null)}
                 className="p-1 rounded hover:bg-slate-800 text-slate-500 hover:text-slate-100"
               >
-                <X className="w-4.5 h-4.5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
             
