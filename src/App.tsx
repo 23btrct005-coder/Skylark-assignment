@@ -175,7 +175,9 @@ export default function App() {
     localStorage.getItem('mondayToken') || 
     'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjY4NDg2MTIxNiwiYWFpIjoxMSwidWlkIjoxMTA0NzA1NTQsImlhZCI6IjIwMjYtMDctMjFUMDg6NDM6NDkuNzUzWiIsInBlciI6Im1lOndyaXRlIiwiYWN0aWQiOjM2MTMxMjY2LCJyZ24iOiJhcHNlMiJ9.I9pTDQMFtClUyL6bww979zZwsgYQ5wKrerOIhZ2xfBI'
   );
-  const [geminiApiKey, setGeminiApiKey] = useState<string>(localStorage.getItem('geminiApiKey') || '');
+  const [geminiApiKey, setGeminiApiKey] = useState<string>(
+    localStorage.getItem('geminiApiKey') || (import.meta.env.VITE_GEMINI_API_KEY as string) || ''
+  );
   const [syncStatus] = useState<'connected' | 'disconnected'>('connected');
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
   const [lastSyncTime, setLastSyncTime] = useState<string>('12 mins ago');
