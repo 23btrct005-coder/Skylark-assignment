@@ -1670,7 +1670,8 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
             <div className="p-3 border-b border-slate-800 flex items-center space-x-3.5">
               <Search className="w-4 h-4 text-slate-400" />
               <input
-                type="text"
+                id="command-palette-input"
+                type="search"
                 autoFocus
                 placeholder="Type a command or destination (e.g. dashboard, chat, deals)..."
                 onChange={(e) => {

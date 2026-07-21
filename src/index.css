@@ -311,3 +311,18 @@ canvas {
     background: transparent !important;
   }
 }
+
+/* Remove all outline borders and boxes from command palette search input */
+#command-palette-input,
+#command-palette-input:focus {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
+
+/* Hide native search cancel buttons */
+#command-palette-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
