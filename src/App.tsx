@@ -235,22 +235,22 @@ export default function App() {
       const totalVal = renewableDeals.reduce((sum, d) => sum + d.value, 0);
       const wonVal = renewableDeals.filter(d => d.stage === 'Won').reduce((sum, d) => sum + d.value, 0);
       return `### ⚡ Renewables Sector Pipeline Analysis
-Our Renewables sector pipeline is currently performing **strongly**, representing **$${(totalVal / 1000).toFixed(0)}k** in total value across **${renewableDeals.length} active deals**.
+Our Renewables sector pipeline is currently performing **strongly**, representing **₹${(totalVal / 1000).toFixed(0)}k** in total value across **${renewableDeals.length} active deals**.
 
 **Key Metrics:**
-*   **Total Pipeline:** $${totalVal.toLocaleString()}
-*   **Closed-Won Deals:** $${wonVal.toLocaleString()} (e.g., *Tata Solar Grid Phase 2*)
-*   **Negotiation Stage:** $320,000 (*Adani Wind Farm Mapping*)
+*   **Total Pipeline:** ₹${totalVal.toLocaleString()}
+*   **Closed-Won Deals:** ₹${wonVal.toLocaleString()} (e.g., *Tata Solar Grid Phase 2*)
+*   **Negotiation Stage:** ₹3,20,000 (*Adani Wind Farm Mapping*)
 
 **Actionable Insights:**
-The *Adani Wind Farm Mapping* deal ($320k) is currently in final legal review with an 80% close probability. The assigned team is *Alpha Flight Team*, who already have a Work Order in 'Not Started' status awaiting permit authorization. Recommend finalizing contract sign-off by next week.`;
+The *Adani Wind Farm Mapping* deal (₹320k) is currently in final legal review with an 80% close probability. The assigned team is *Alpha Flight Team*, who already have a Work Order in 'Not Started' status awaiting permit authorization. Recommend finalizing contract sign-off by next week.`;
     }
     
     if (q.includes('delay') || q.includes('attention') || q.includes('risk')) {
       return `### ⚠️ Operations Bottlenecks & Delayed Work Orders
 There is currently **1 Critical Operational Risk** requiring immediate leadership attention:
 
-1.  **Work Order for NHAI Highway Corridor Mapping** (Value: **$1,200,000**)
+1.  **Work Order for NHAI Highway Corridor Mapping** (Value: **₹1,20,00,000**)
     *   **Status:** Delayed
     *   **Priority:** Critical
     *   **Assigned Team:** Delta LiDAR Survey Team
@@ -272,13 +272,13 @@ Here is the aggregate value of our active sales pipeline:
 
 | Deal Stage | Active Value | Description |
 | :--- | :--- | :--- |
-| **Won** | $${(stageCounts['Won'] || 0).toLocaleString()} | Closed deals currently in project execution. |
-| **Negotiation** | $${(stageCounts['Negotiation'] || 0).toLocaleString()} | Deals in final pricing and legal reviews. |
-| **Pitch** | $${(stageCounts['Pitch'] || 0).toLocaleString()} | Technical proposals submitted. |
-| **Lead** | $${(stageCounts['Lead'] || 0).toLocaleString()} | Initial discussions. |
+| **Won** | ₹${(stageCounts['Won'] || 0).toLocaleString()} | Closed deals currently in project execution. |
+| **Negotiation** | ₹${(stageCounts['Negotiation'] || 0).toLocaleString()} | Deals in final pricing and legal reviews. |
+| **Pitch** | ₹${(stageCounts['Pitch'] || 0).toLocaleString()} | Technical proposals submitted. |
+| **Lead** | ₹${(stageCounts['Lead'] || 0).toLocaleString()} | Initial discussions. |
 
 **Conversion Summary:**
-Our current pipeline is heavily weighted in the **Won** stage ($${((stageCounts['Won'] || 0)/1000).toFixed(0)}k), which ensures high immediate revenue but highlights a need to build early-stage pipeline traction (currently only $${((stageCounts['Lead'] || 0)/1000).toFixed(0)}k in Lead stage).`;
+Our current pipeline is heavily weighted in the **Won** stage (₹${((stageCounts['Won'] || 0)/1000).toFixed(0)}k), which ensures high immediate revenue but highlights a need to build early-stage pipeline traction (currently only ₹${((stageCounts['Lead'] || 0)/1000).toFixed(0)}k in Lead stage).`;
     }
 
     if (q.includes('weekly') || q.includes('report') || q.includes('leadership')) {
@@ -289,8 +289,8 @@ Our current pipeline is heavily weighted in the **Won** stage ($${((stageCounts[
 ---
 
 ### 1. Revenue & Pipeline Summary
-*   **Delivered Revenue (Completed Jobs):** $1,060,000 (Strong contributions from *Singareni volume surveys* and *BESCOM Substation* projects).
-*   **Active Sales Pipeline:** $610,000 (Weighted towards Renewables and Mining sectors).
+*   **Delivered Revenue (Completed Jobs):** ₹10,60,000 (Strong contributions from *Singareni volume surveys* and *BESCOM Substation* projects).
+*   **Active Sales Pipeline:** ₹6,10,000 (Weighted towards Renewables and Mining sectors).
 *   **Win Rate:** 78% average conversion rate over past 90 days.
 
 ### 2. Operational Highlights
@@ -298,16 +298,16 @@ Our current pipeline is heavily weighted in the **Won** stage ($${((stageCounts[
 *   **GCP Alignment:** Ground control points established successfully for L&T Smart City using high-precision DGPS.
 
 ### 3. Critical Risks
-*   **NHAI Highway Mapping (Delayed):** The LiDAR sensor repair is delaying a $1.2M contract execution. Core priority is logistics dispatch for replacement units.
+*   **NHAI Highway Mapping (Delayed):** The LiDAR sensor repair is delaying a ₹1.2M contract execution. Core priority is logistics dispatch for replacement units.
 
 ### 4. Forecast & Outlook
-*   We expect to close the *Adani Wind Farm Mapping* deal ($320k) within 10 business days. Flight permissions are already secured to allow immediate kickoff upon signature.`;
+*   We expect to close the *Adani Wind Farm Mapping* deal (₹320k) within 10 business days. Flight permissions are already secured to allow immediate kickoff upon signature.`;
     }
 
     return `I parsed your query: "${query}". Here is a generic summary of your business data:
 *   **Total Deals Loaded:** ${deals.length}
 *   **Active Projects (Work Orders):** ${workOrders.length}
-*   **Total Closed-Won Revenue:** $${deals.filter(d => d.stage === 'Won').reduce((sum, d) => sum + d.value, 0).toLocaleString()}
+*   **Total Closed-Won Revenue:** ₹${deals.filter(d => d.stage === 'Won').reduce((sum, d) => sum + d.value, 0).toLocaleString()}
 Please set a **Gemini API Key** in the **Settings** tab if you would like full generative reasoning on your dataset.`;
   };
 
@@ -623,7 +623,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 <div>
                   <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider">AI Operations Insight Recommendation</h4>
                   <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
-                    LiDAR sensor failures on the **NHAI Highway Mapping Corridor** project have halted operations. stand-by dispatch from Bangalore HQ has not been requested. **Action:** dispatch standby calibration tools within 24h to avoid $400k revenue recognition delay.
+                    LiDAR sensor failures on the **NHAI Highway Mapping Corridor** project have halted operations. stand-by dispatch from Bangalore HQ has not been requested. **Action:** dispatch standby calibration tools within 24h to avoid ₹400k revenue recognition delay.
                   </p>
                 </div>
               </div>
@@ -638,7 +638,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   </div>
                   <div>
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Active Pipeline</span>
-                    <h3 className="text-2xl font-bold text-slate-100 mt-1 font-mono">${(totalPipelineValue / 1000).toFixed(0)}k</h3>
+                    <h3 className="text-2xl font-bold text-slate-100 mt-1 font-mono">₹{(totalPipelineValue / 1000).toFixed(0)}k</h3>
                   </div>
                   <div className="flex items-end justify-between mt-2">
                     <span className="text-xs text-emerald-500 flex items-center space-x-0.5 font-bold">
@@ -662,7 +662,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   </div>
                   <div>
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Closed Won Revenue</span>
-                    <h3 className="text-2xl font-bold text-slate-100 mt-1 font-mono">${(closedWonRevenue / 1000000).toFixed(2)}M</h3>
+                    <h3 className="text-2xl font-bold text-slate-100 mt-1 font-mono">₹{(closedWonRevenue / 100000).toFixed(1)}L</h3>
                   </div>
                   <div className="flex items-end justify-between mt-2">
                     <span className="text-xs text-emerald-500 flex items-center space-x-0.5 font-bold">
@@ -876,42 +876,44 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 <div className="flex-1 flex flex-col min-w-0 bg-slate-950/10">
                   
                   {/* Messages */}
-                  <div className="flex-1 overflow-y-auto p-6 space-y-6">
-                    {chatMessages.map((msg, index) => (
-                      <div key={index} className={`flex items-start space-x-3.5 ${msg.sender === 'user' ? 'justify-end' : ''}`}>
-                        {msg.sender === 'agent' && (
-                          <div className="w-8 h-8 rounded-lg bg-brand-600/10 border border-brand-600/20 flex items-center justify-center font-bold text-brand-600 mt-1 shrink-0">
+                  <div className="flex-1 overflow-y-auto p-6">
+                    <div className="max-w-4xl mx-auto space-y-6 w-full">
+                      {chatMessages.map((msg, index) => (
+                        <div key={index} className={`flex items-start space-x-3.5 ${msg.sender === 'user' ? 'justify-end' : ''}`}>
+                          {msg.sender === 'agent' && (
+                            <div className="w-8 h-8 rounded-lg bg-brand-600/10 border border-brand-600/20 flex items-center justify-center font-bold text-brand-600 mt-1 shrink-0">
+                              BI
+                            </div>
+                          )}
+                          <div className={`max-w-2xl rounded-2xl p-4.5 text-xs leading-relaxed text-left ${
+                            msg.sender === 'user'
+                              ? 'bg-brand-600 text-white rounded-tr-none shadow-md shadow-brand-600/10'
+                              : 'bg-slate-900/40 text-slate-200 border border-slate-800/80 rounded-tl-none shadow-sm'
+                          }`}>
+                            <div className="prose prose-invert max-w-none break-words">
+                              {formatMessageText(msg.text)}
+                            </div>
+                            <span className="text-[9px] text-slate-500 block text-right mt-2 font-mono">{msg.time}</span>
+                          </div>
+                        </div>
+                      ))}
+
+                      {/* AI Loading bubble */}
+                      {isAiTyping && (
+                        <div className="flex items-start space-x-3.5">
+                          <div className="w-8 h-8 rounded-lg bg-brand-600/10 border border-brand-600/20 flex items-center justify-center font-bold text-brand-600 shrink-0">
                             BI
                           </div>
-                        )}
-                        <div className={`max-w-2xl rounded-2xl p-4.5 text-xs leading-relaxed text-left ${
-                          msg.sender === 'user'
-                            ? 'bg-brand-600 text-white rounded-tr-none shadow-md shadow-brand-600/5'
-                            : 'bg-slate-900/50 text-slate-300 rounded-tl-none'
-                        }`}>
-                          <div className="prose prose-invert max-w-none break-words">
-                            {formatMessageText(msg.text)}
-                          </div>
-                          <span className="text-[9px] text-slate-500 block text-right mt-2 font-mono">{msg.time}</span>
-                        </div>
-                      </div>
-                    ))}
-
-                    {/* AI Loading bubble */}
-                    {isAiTyping && (
-                      <div className="flex items-start space-x-3.5">
-                        <div className="w-8 h-8 rounded-lg bg-brand-600/10 border border-brand-600/20 flex items-center justify-center font-bold text-brand-600 shrink-0">
-                          BI
-                        </div>
-                        <div className="bg-slate-900 border border-slate-800/40 rounded-2xl rounded-tl-none p-4 max-w-sm">
-                          <div className="flex items-center space-x-1.5">
-                            <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '0ms' }}></span>
-                            <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '150ms' }}></span>
-                            <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '300ms' }}></span>
+                          <div className="bg-slate-900/40 border border-slate-800/80 rounded-2xl rounded-tl-none p-4 max-w-sm">
+                            <div className="flex items-center space-x-1.5">
+                              <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '0ms' }}></span>
+                              <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '150ms' }}></span>
+                              <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '300ms' }}></span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
 
                   {/* Input form */}
@@ -1067,7 +1069,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                                   {deal.sector}
                                 </span>
                               </td>
-                              <td className="p-4 text-right font-mono font-bold text-slate-200">${deal.value.toLocaleString()}</td>
+                              <td className="p-4 text-right font-mono font-bold text-slate-200">₹{deal.value.toLocaleString()}</td>
                               <td className="p-4">
                                 <span className={`px-2.5 py-0.5 rounded font-bold text-[10px] uppercase tracking-wide ${
                                   deal.stage === 'Won' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' :
@@ -1113,7 +1115,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                             <span className="text-xs font-bold text-slate-200">{stage}</span>
                             <span className="text-[10px] text-slate-500 ml-1.5 font-mono">({stageDeals.length})</span>
                           </div>
-                          <span className="text-[10px] text-slate-450 font-mono font-bold">${(stageSum / 1000).toFixed(0)}k</span>
+                          <span className="text-[10px] text-slate-450 font-mono font-bold">₹{(stageSum / 1000).toFixed(0)}k</span>
                         </div>
                         <div className="space-y-2 flex-1 overflow-y-auto">
                           {stageDeals.map(deal => (
@@ -1124,7 +1126,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                             >
                               <div className="flex items-center justify-between">
                                 <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-955 text-slate-500 font-mono uppercase font-bold">{deal.sector}</span>
-                                <span className="text-[10px] font-mono font-bold text-slate-200">${(deal.value / 1000).toFixed(0)}k</span>
+                                <span className="text-[10px] font-mono font-bold text-slate-200">₹{(deal.value / 1000).toFixed(0)}k</span>
                               </div>
                               <h4 className="text-xs font-bold text-slate-200 mt-2 truncate">{deal.name}</h4>
                               <p className="text-[10px] text-slate-500 mt-1 truncate">{deal.customer}</p>
@@ -1253,7 +1255,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                                   {wo.status}
                                 </span>
                               </td>
-                              <td className="p-4 text-right font-mono font-bold text-slate-200">${wo.revenue.toLocaleString()}</td>
+                              <td className="p-4 text-right font-mono font-bold text-slate-200">₹{wo.revenue.toLocaleString()}</td>
                             </tr>
                           ))
                         )}
@@ -1439,14 +1441,14 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   <div>
                     <h4 className="text-[10px] font-bold text-slate-250 uppercase tracking-wider mb-2 font-mono">1. Executive Summary</h4>
                     <p>
-                      This reporting cycle outlines the transition of several key pilot surveys into contract execution. Skylark Drones' core platforms recorded total completed revenue of **$1.06M**, driven by volume assessments in the mining division. While pipeline strength remains robust at **$610k**, operational delays in our highway mapping corridors highlight key equipment logistics vulnerabilities that require mitigation.
+                      This reporting cycle outlines the transition of several key pilot surveys into contract execution. Skylark Drones' core platforms recorded total completed revenue of **₹10.60 L**, driven by volume assessments in the mining division. While pipeline strength remains robust at **₹6.10 L**, operational delays in our highway mapping corridors highlight key equipment logistics vulnerabilities that require mitigation.
                     </p>
                   </div>
                   
                   <div>
                     <h4 className="text-[10px] font-bold text-slate-250 uppercase tracking-wider mb-2 font-mono">2. Pipeline Analysis</h4>
                     <p>
-                      Active negotiations represent **$610k** in pipeline volume. The renewables sector remains our most active sector, representing 52% of pipeline value. Contract conversions remain healthy with a 78% win rate over 90 days.
+                      Active negotiations represent **₹6.10 L** in pipeline volume. The renewables sector remains our most active sector, representing 52% of pipeline value. Contract conversions remain healthy with a 78% win rate over 90 days.
                     </p>
                   </div>
 
@@ -1457,7 +1459,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                       <div>
                         <p className="font-bold text-slate-200">NHAI Corridor Mapping Project Delivery (ID: wo3)</p>
                         <p className="mt-1 text-[11px] text-rose-450">
-                          Equipment failure has halted Day 3 LiDAR operations. Standard replacement dispatch timeline stands at 15 days, impacting first phase milestone collections ($400,000 billing schedule).
+                          Equipment failure has halted Day 3 LiDAR operations. Standard replacement dispatch timeline stands at 15 days, impacting first phase milestone collections (₹4,00,000 billing schedule).
                         </p>
                       </div>
                     </div>
@@ -1467,7 +1469,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                     <h4 className="text-[10px] font-bold text-slate-250 uppercase tracking-wider mb-2 font-mono">4. Action Items & Next Steps</h4>
                     <ul className="list-decimal ml-4 space-y-1.5 text-slate-400">
                       <li>Authorize backup LiDAR sensor allocation dispatch from Bangalore HQ immediately.</li>
-                      <li>Finalize commercial contract negotiations for the **Adani Wind Farm Mapping** ($320k, currently in legal).</li>
+                      <li>Finalize commercial contract negotiations for the **Adani Wind Farm Mapping** (₹320k, currently in legal).</li>
                       <li>Address flagged data missing entries (missing close dates/comments) on Monday.com boards.</li>
                     </ul>
                   </div>
@@ -1860,7 +1862,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div className="p-3 rounded-xl border border-slate-800 bg-slate-900/30">
                   <p className="text-[9px] text-slate-500 font-mono uppercase">Deal Value</p>
-                  <p className="text-sm font-bold text-slate-200 mt-1 font-mono">${selectedDeal.value.toLocaleString()}</p>
+                  <p className="text-sm font-bold text-slate-200 mt-1 font-mono">₹{selectedDeal.value.toLocaleString()}</p>
                 </div>
                 <div className="p-3 rounded-xl border border-slate-800 bg-slate-900/30">
                   <p className="text-[9px] text-slate-500 font-mono uppercase">Stage Status</p>
@@ -1961,7 +1963,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 </div>
                 <div className="p-3 rounded-xl border border-slate-800 bg-slate-900/30">
                   <p className="text-[9px] text-slate-500 font-mono uppercase">Project Budget</p>
-                  <p className="text-sm font-bold text-slate-200 mt-1 font-mono">${selectedWorkOrder.revenue.toLocaleString()}</p>
+                  <p className="text-sm font-bold text-slate-200 mt-1 font-mono">₹{selectedWorkOrder.revenue.toLocaleString()}</p>
                 </div>
               </div>
 
