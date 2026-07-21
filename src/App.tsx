@@ -163,6 +163,7 @@ export default function App() {
   const [selectedWorkOrder, setSelectedWorkOrder] = useState<WorkOrder | null>(null);
   const [notificationsOpen, setNotificationsOpen] = useState<boolean>(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState<boolean>(false);
+  const [commandPaletteSearch, setCommandPaletteSearch] = useState<string>('');
   
   // Data States
   const [deals] = useState<Deal[]>(initialDeals);
@@ -1684,18 +1685,20 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 autoFocus
                 placeholder="Type a command or destination (e.g. dashboard, chat, deals)..."
                 onChange={(e) => {
-                  const cmd = e.target.value.toLowerCase();
-                  if (cmd === 'dashboard') { setCurrentTab('dashboard'); setCommandPaletteOpen(false); }
-                  if (cmd === 'chat') { setCurrentTab('chat'); setCommandPaletteOpen(false); }
-                  if (cmd === 'deals') { setCurrentTab('deals'); setCommandPaletteOpen(false); }
-                  if (cmd === 'workorders') { setCurrentTab('workorders'); setCommandPaletteOpen(false); }
-                  if (cmd === 'analytics') { setCurrentTab('analytics'); setCommandPaletteOpen(false); }
-                  if (cmd === 'reports') { setCurrentTab('reports'); setCommandPaletteOpen(false); }
+                  const val = e.target.value;
+                  setCommandPaletteSearch(val);
+                  const cmd = val.toLowerCase().trim();
+                  if (cmd === 'dashboard') { setCurrentTab('dashboard'); setCommandPaletteOpen(false); setCommandPaletteSearch(''); }
+                  if (cmd === 'chat') { setCurrentTab('chat'); setCommandPaletteOpen(false); setCommandPaletteSearch(''); }
+                  if (cmd === 'deals') { setCurrentTab('deals'); setCommandPaletteOpen(false); setCommandPaletteSearch(''); }
+                  if (cmd === 'workorders') { setCurrentTab('workorders'); setCommandPaletteOpen(false); setCommandPaletteSearch(''); }
+                  if (cmd === 'analytics') { setCurrentTab('analytics'); setCommandPaletteOpen(false); setCommandPaletteSearch(''); }
+                  if (cmd === 'reports') { setCurrentTab('reports'); setCommandPaletteOpen(false); setCommandPaletteSearch(''); }
                 }}
                 className="w-full bg-transparent focus:outline-none text-xs text-slate-200 placeholder-slate-500"
               />
               <button 
-                onClick={() => setCommandPaletteOpen(false)}
+                onClick={() => { setCommandPaletteOpen(false); setCommandPaletteSearch(''); }}
                 className="text-[9px] px-1.5 py-0.5 rounded border border-slate-700 bg-slate-800 text-slate-400 font-mono"
               >
                 ESC
@@ -1703,12 +1706,17 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
             </div>
             <div className="p-2 space-y-1 text-xs text-left">
               {[
-                { label: "Switch to Executive Dashboard", action: () => setCurrentTab('dashboard') },
-                { label: "Open AI Assistant Workspace", action: () => setCurrentTab('chat') },
-                { label: "Search Deals Module", action: () => setCurrentTab('deals') },
-                { label: "Sync Monday.com board status", action: () => handleManualSync() },
-                { label: "Audit Data Quality Health", action: () => setCurrentTab('dataquality') }
-              ].map((cmd, idx) => (
+                { label: "Switch to Executive Dashboard", action: () => setCurrentTab('dashboard'), keys: ['dashboard', 'executive', 'home', 'switch'] },
+                { label: "Open AI Assistant Workspace", action: () => setCurrentTab('chat'), keys: ['chat', 'assistant', 'ai', 'ask'] },
+                { label: "Search Deals Module", action: () => setCurrentTab('deals'), keys: ['deals', 'crm', 'sales', 'pipeline'] },
+                { label: "Sync Monday.com board status", action: () => handleManualSync(), keys: ['sync', 'monday', 'refresh'] },
+                { label: "Audit Data Quality Health", action: () => setCurrentTab('dataquality'), keys: ['quality', 'data', 'health', 'audit'] }
+              ]
+              .filter(cmd => 
+                cmd.label.toLowerCase().includes(commandPaletteSearch.toLowerCase()) ||
+                cmd.keys.some(k => k.includes(commandPaletteSearch.toLowerCase()))
+              )
+              .map((cmd, idx) => (
                 <button
                   key={idx}
                   onClick={() => {
