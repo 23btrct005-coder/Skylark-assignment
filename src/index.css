@@ -126,6 +126,28 @@ aside button.bg-brand-600 svg {
   color: #FFFFFF !important;
 }
 
+/* Sidebar Text Overrides (Ensure always high contrast light text on dark sidebar background) */
+aside span,
+aside p,
+aside div,
+aside h1,
+aside h2,
+aside h3 {
+  color: inherit;
+}
+aside .text-slate-50,
+aside .text-slate-100,
+aside .text-slate-200 {
+  color: #F8FAFC !important;
+}
+aside .text-slate-300,
+aside .text-slate-400 {
+  color: #94A3B8 !important;
+}
+aside .text-slate-500 {
+  color: #64748B !important;
+}
+
 /* 2. Card Styling Override */
 .glass-card {
   background-color: var(--card-bg) !important;
@@ -189,11 +211,12 @@ tbody tr:hover {
   background-color: var(--chat-bg) !important;
 }
 
-/* AI Chat response boxes */
+/* AI Chat response boxes (Modern soft borders, no hard outline) */
 .bg-slate-900\/50.text-slate-300 {
   background-color: var(--slate-900) !important;
-  border-color: var(--card-border) !important;
+  border: 1px solid var(--card-border) !important;
   color: var(--slate-200) !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02) !important;
 }
 
 /* 6. Settings Page Inputs */

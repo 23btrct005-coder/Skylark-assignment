@@ -77,6 +77,78 @@ export default function App() {
 
   // Navigation & View States
   const [currentTab, setCurrentTab] = useState<string>('dashboard');
+  
+  // Custom Markdown & Text Formatter for AI Responses
+  const parseInlineBold = (str: string) => {
+    const parts = str.split('**');
+    return parts.map((part, i) => {
+      if (i % 2 === 1) {
+        return <strong key={i} className="font-bold text-slate-900 dark:text-white">{part}</strong>;
+      }
+      return part;
+    });
+  };
+
+  const formatMessageText = (text: string) => {
+    const lines = text.split('\n');
+    return lines.map((line, lineIdx) => {
+      const trimmed = line.trim();
+      if (!trimmed) return <div key={lineIdx} className="h-1.5"></div>;
+
+      // Table formatting
+      if (trimmed.startsWith('|')) {
+        if (trimmed.includes('---')) return null;
+        const cols = trimmed.split('|').filter(c => c.trim()).map(c => c.trim());
+        return (
+          <div key={lineIdx} className="grid grid-cols-3 gap-2 py-1 text-[11px] border-b border-slate-200 dark:border-slate-800">
+            {cols.map((col, colIdx) => (
+              <span key={colIdx} className={colIdx === 0 ? "font-bold text-slate-800 dark:text-slate-200" : "text-slate-500 dark:text-slate-400"}>
+                {parseInlineBold(col)}
+              </span>
+            ))}
+          </div>
+        );
+      }
+
+      // Headers
+      if (trimmed.startsWith('# ')) {
+        return <h1 key={lineIdx} className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-2 mt-3 first:mt-0">{parseInlineBold(trimmed.substring(2))}</h1>;
+      }
+      if (trimmed.startsWith('## ')) {
+        return <h2 key={lineIdx} className="text-xs font-bold text-slate-800 dark:text-slate-100 mb-1.5 mt-2">{parseInlineBold(trimmed.substring(3))}</h2>;
+      }
+      if (trimmed.startsWith('### ')) {
+        return <h3 key={lineIdx} className="text-xs font-bold text-slate-850 dark:text-slate-100 mb-1.5 mt-2">{parseInlineBold(trimmed.substring(4))}</h3>;
+      }
+
+      // List items (remove asterisk entirely, format spacing)
+      if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
+        return (
+          <li key={lineIdx} className="list-disc ml-5 text-slate-650 dark:text-slate-300 mb-0.5 leading-relaxed">
+            {parseInlineBold(trimmed.substring(2))}
+          </li>
+        );
+      }
+
+      // Ordered list items
+      const numMatch = trimmed.match(/^(\d+)\.\s(.*)/);
+      if (numMatch) {
+        return (
+          <li key={lineIdx} className="list-decimal ml-5 text-slate-650 dark:text-slate-305 mb-0.5 leading-relaxed">
+            {parseInlineBold(numMatch[2])}
+          </li>
+        );
+      }
+
+      // Standard text line
+      return (
+        <p key={lineIdx} className="mb-1 text-slate-700 dark:text-slate-300 leading-relaxed">
+          {parseInlineBold(trimmed)}
+        </p>
+      );
+    });
+  };
+
   const [settingsActiveSection, setSettingsActiveSection] = useState<'api' | 'sync' | 'appearance'>('api');
   const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null);
   const [selectedWorkOrder, setSelectedWorkOrder] = useState<WorkOrder | null>(null);
@@ -787,27 +859,13 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                             BI
                           </div>
                         )}
-                        <div className={`max-w-2xl rounded-2xl p-4.5 text-xs leading-relaxed border text-left ${
+                        <div className={`max-w-2xl rounded-2xl p-4.5 text-xs leading-relaxed text-left ${
                           msg.sender === 'user'
-                            ? 'bg-brand-600 text-white border-brand-500/20 rounded-tr-none shadow-md shadow-brand-600/10'
-                            : 'bg-slate-900 text-slate-350 border-slate-800/80 rounded-tl-none'
+                            ? 'bg-brand-600 text-white rounded-tr-none shadow-md shadow-brand-600/5'
+                            : 'bg-slate-900/50 text-slate-300 rounded-tl-none'
                         }`}>
                           <div className="prose prose-invert max-w-none break-words">
-                            {msg.text.split('\n').map((line, lineIdx) => {
-                              if (line.startsWith('# ')) return <h1 key={lineIdx} className="text-base font-bold text-slate-100 mb-3 mt-4">{line.replace('# ', '')}</h1>;
-                              if (line.startsWith('### ')) return <h3 key={lineIdx} className="text-xs font-bold text-slate-200 mb-2 mt-3">{line.replace('### ', '')}</h3>;
-                              if (line.startsWith('* ')) return <li key={lineIdx} className="list-disc ml-4 text-slate-300 mb-1">{line.replace('* ', '')}</li>;
-                              if (line.startsWith('|')) {
-                                if (line.includes('---')) return null;
-                                const cols = line.split('|').filter(c => c.trim()).map(c => c.trim());
-                                return (
-                                  <div key={lineIdx} className="grid grid-cols-3 gap-2 py-1.5 text-[11px] border-b border-slate-850">
-                                    {cols.map((col, colIdx) => <span key={colIdx} className={colIdx === 0 ? "font-bold text-slate-200" : "text-slate-400"}>{col}</span>)}
-                                  </div>
-                                );
-                              }
-                              return <p key={lineIdx} className="mb-1.5">{line}</p>;
-                            })}
+                            {formatMessageText(msg.text)}
                           </div>
                           <span className="text-[9px] text-slate-500 block text-right mt-2 font-mono">{msg.time}</span>
                         </div>
