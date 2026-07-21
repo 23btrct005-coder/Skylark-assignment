@@ -890,36 +890,58 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   <div className="flex-1 overflow-y-auto p-6">
                     <div className="max-w-4xl mx-auto space-y-6 w-full">
                       {chatMessages.map((msg, index) => (
-                        <div key={index} className={`flex items-start space-x-3.5 ${msg.sender === 'user' ? 'justify-end' : ''}`}>
-                          {msg.sender === 'agent' && (
-                            <div className="w-8 h-8 rounded-lg bg-brand-600/10 border border-brand-600/20 flex items-center justify-center font-bold text-brand-600 mt-1 shrink-0">
-                              BI
+                        <div key={index} className="flex flex-col space-y-2 text-left animate-slide-up">
+                          {/* Sender Header Row */}
+                          <div className={`flex items-center space-x-2 ${msg.sender === 'user' ? 'justify-end' : ''}`}>
+                            {msg.sender === 'agent' ? (
+                              <>
+                                <div className="w-5 h-5 rounded bg-brand-600/10 border border-brand-600/20 flex items-center justify-center font-bold text-[10px] text-brand-600">
+                                  BI
+                                </div>
+                                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Skylark BI Assistant</span>
+                              </>
+                            ) : (
+                              <>
+                                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">You</span>
+                                <div className="w-5 h-5 rounded bg-brand-600 flex items-center justify-center font-bold text-[10px] text-white">
+                                  U
+                                </div>
+                              </>
+                            )}
+                          </div>
+                          
+                          {/* Message Card */}
+                          <div className={`flex ${msg.sender === 'user' ? 'justify-end' : ''}`}>
+                            <div className={`max-w-3xl rounded-2xl p-4.5 text-xs leading-relaxed ${
+                              msg.sender === 'user'
+                                ? 'bg-brand-600 text-white shadow-md shadow-brand-600/5'
+                                : 'bg-slate-900/40 text-slate-200 border border-slate-850/60 dark:border-slate-800/60 shadow-sm'
+                            }`}>
+                              <div className="prose prose-invert max-w-none break-words">
+                                {formatMessageText(msg.text)}
+                              </div>
+                              <span className="text-[9px] text-slate-500 block text-right mt-2 font-mono">{msg.time}</span>
                             </div>
-                          )}
-                          <div className={`max-w-2xl rounded-2xl p-4.5 text-xs leading-relaxed text-left ${
-                            msg.sender === 'user'
-                              ? 'bg-brand-600 text-white rounded-tr-none shadow-md shadow-brand-600/10'
-                              : 'bg-slate-900/40 text-slate-200 border border-slate-800/80 rounded-tl-none shadow-sm'
-                          }`}>
-                            <div className="prose prose-invert max-w-none break-words">
-                              {formatMessageText(msg.text)}
-                            </div>
-                            <span className="text-[9px] text-slate-500 block text-right mt-2 font-mono">{msg.time}</span>
                           </div>
                         </div>
                       ))}
 
                       {/* AI Loading bubble */}
                       {isAiTyping && (
-                        <div className="flex items-start space-x-3.5">
-                          <div className="w-8 h-8 rounded-lg bg-brand-600/10 border border-brand-600/20 flex items-center justify-center font-bold text-brand-600 shrink-0">
-                            BI
+                        <div className="flex flex-col space-y-2 text-left">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-5 h-5 rounded bg-brand-600/10 border border-brand-600/20 flex items-center justify-center font-bold text-[10px] text-brand-600">
+                              BI
+                            </div>
+                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Skylark BI Assistant</span>
                           </div>
-                          <div className="bg-slate-900/40 border border-slate-800/80 rounded-2xl rounded-tl-none p-4 max-w-sm">
-                            <div className="flex items-center space-x-1.5">
-                              <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '0ms' }}></span>
-                              <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '150ms' }}></span>
-                              <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '300ms' }}></span>
+                          <div className="flex">
+                            <div className="bg-slate-900/40 border border-slate-805/60 dark:border-slate-800/60 rounded-2xl p-4 max-w-sm">
+                              <div className="flex items-center space-x-1.5">
+                                <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '0ms' }}></span>
+                                <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '150ms' }}></span>
+                                <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '300ms' }}></span>
+                              </div>
                             </div>
                           </div>
                         </div>
