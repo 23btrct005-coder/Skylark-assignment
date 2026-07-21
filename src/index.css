@@ -1,91 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
   /* Light Theme Variables */
-  --slate-950: #F6F8FC;       /* App Background */
-  --slate-900: #F1F5F9;       /* Secondary Background / Surfaces */
-  --slate-850: #CBD5E1;       /* Dividers */
-  --slate-800: #E2E8F0;       /* Borders */
-  --slate-700: #E2E8F0;       /* Borders */
-  --slate-600: #CBD5E1;       /* Disabled Text / Elements */
-  --slate-500: #94A3B8;       /* Muted Text */
-  --slate-400: #64748B;       /* Secondary Text */
-  --slate-300: #64748B;       /* Secondary Text */
+  --slate-950: #F8FAFC;       /* Canvas Background */
+  --slate-900: #F1F5F9;       /* Secondary Surface */
+  --slate-850: #E2E8F0;       /* Borders */
+  --slate-800: #CBD5E1;       /* Dividers */
+  --slate-700: #94A3B8;       /* Disabled Elements */
+  --slate-600: #64748B;       /* Secondary Text */
+  --slate-500: #64748B;       /* Secondary Text */
+  --slate-400: #475569;       /* Muted Text */
+  --slate-300: #334155;       /* Primary Text (Secondary) */
   --slate-200: #0F172A;       /* Primary Text */
-  --slate-100: #0F172A;       /* Primary Text */
-  --slate-50: #0F172A;        /* Primary Text */
+  --slate-100: #0F172A;       
+  --slate-50: #0F172A;        
 
-  /* Brand Colors */
-  --brand-600: #5B5BD6;       /* Primary Indigo */
-  --brand-500: #4F46E5;       /* Primary Hover */
-  --brand-400: #06B6D4;       /* Accent Electric Cyan */
-  --indigo-600: #7C3AED;      /* Secondary Royal Purple */
+  /* Brand Theme System */
+  --brand-600: #5B5BD6;       /* Indigo Accent */
+  --brand-500: #4F46E5;       /* Indigo Hover */
+  --brand-400: #06B6D4;       /* Accent Cyan */
+  --indigo-600: #7C3AED;      /* Royal Purple */
   --indigo-500: #7C3AED;
 
-  /* Status Colors */
-  --emerald-500: #22C55E;     /* Success */
-  --amber-500: #F59E0B;       /* Warning */
-  --rose-500: #EF4444;        /* Error */
-  --blue-500: #3B82F6;        /* Info */
+  /* Status Tokens */
+  --emerald-500: #22C55E;     
+  --amber-500: #F59E0B;       
+  --rose-500: #EF4444;        
+  --blue-500: #3B82F6;        
 
-  /* Structural Overrides */
+  /* Container Overrides */
   --card-bg: #FFFFFF;
-  --card-border: #E2E8F0;
-  --sidebar-bg: #0F172A;
+  --card-border: rgba(226, 232, 240, 0.8);
+  --sidebar-bg: #0F172A;      /* Sidebar is always dark slate for branding high-contrast */
   --sidebar-border: rgba(255, 255, 255, 0.05);
   --chat-bg: #FFFFFF;
   --header-bg: #FFFFFF;
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.03), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 12px -2px rgba(91, 91, 214, 0.04), 0 2px 6px -1px rgba(91, 91, 214, 0.02);
+  --shadow-lg: 0 12px 24px -4px rgba(91, 91, 214, 0.05), 0 4px 12px -2px rgba(91, 91, 214, 0.02);
 }
 
 .dark {
   /* Dark Theme Variables */
-  --slate-950: #020617;       /* Dark Background */
-  --slate-900: #111827;       /* Surface */
-  --slate-850: #334155;       /* Borders / Dividers */
-  --slate-800: #334155;       /* Borders */
+  --slate-950: #090D16;       /* App Background */
+  --slate-900: #101726;       /* Surface Cards */
+  --slate-850: #1D2636;       /* Dividers */
+  --slate-800: #1D2636;       /* Borders */
   --slate-700: #334155;
-  --slate-600: #334155;
+  --slate-600: #475569;
   --slate-500: #94A3B8;       /* Muted Text */
-  --slate-400: #CBD5E1;       /* Secondary Text */
-  --slate-300: #CBD5E1;       /* Secondary Text */
+  --slate-400: #94A3B8;       /* Secondary Text */
+  --slate-300: #CBD5E1;       
   --slate-200: #F8FAFC;       /* Primary Text */
-  --slate-100: #F8FAFC;       /* Primary Text */
+  --slate-100: #F8FAFC;       
   --slate-50: #F8FAFC;
 
-  /* Brand Colors remain same */
+  /* Brand remains consistent */
   --brand-600: #5B5BD6;
   --brand-500: #4F46E5;
   --brand-400: #06B6D4;
   --indigo-600: #7C3AED;
   --indigo-500: #7C3AED;
 
-  /* Status Colors remain same */
+  /* Status Tokens */
   --emerald-500: #22C55E;
   --amber-500: #F59E0B;
   --rose-500: #EF4444;
   --blue-500: #3B82F6;
 
-  /* Structural Overrides */
-  --card-bg: #1E293B;         /* Surface Card */
-  --card-border: #334155;
-  --sidebar-bg: #020617;      /* Sidebar */
-  --sidebar-border: #334155;
-  --chat-bg: #020617;
-  --header-bg: #111827;
+  /* Container Overrides */
+  --card-bg: #101726;
+  --card-border: #1E2838;
+  --sidebar-bg: #090D16;      /* Sidebar matches the deep canvas under dark mode */
+  --sidebar-border: #1E2838;
+  --chat-bg: #090D16;
+  --header-bg: #101726;
   --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-50 font-sans antialiased overflow-x-hidden transition-colors duration-200;
+    @apply bg-slate-950 text-slate-100 font-sans antialiased overflow-x-hidden transition-colors duration-300;
   }
 
-  /* Custom scrollbar styling */
+  /* Custom clean typography scrollbars */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -99,34 +103,60 @@
   }
 }
 
-/* 1. Sidebar Styling Override */
+/* Animations Keyframes */
+@keyframes slideUpIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { border-color: rgba(91, 91, 214, 0.15); box-shadow: 0 0 15px -3px rgba(91, 91, 214, 0.05); }
+  50% { border-color: rgba(6, 182, 212, 0.35); box-shadow: 0 0 20px -1px rgba(6, 182, 212, 0.15); }
+}
+
+@keyframes typingWave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Helper Animation Classes */
+.animate-slide-up {
+  animation: slideUpIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-glow-pulse {
+  animation: pulseGlow 5s infinite ease-in-out;
+}
+
+.typing-dot {
+  animation: typingWave 1.2s infinite ease-in-out;
+}
+
+/* 1. Floating Sidebar Styling */
 aside {
   background-color: var(--sidebar-bg) !important;
   border-right: 1px solid var(--sidebar-border) !important;
-  transition: background-color 0.2s ease-in-out !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
 }
 
 aside button {
-  color: #CBD5E1 !important;
+  color: #94A3B8 !important;
+  transition: all 0.2s ease-in-out !important;
 }
 
 aside button:hover {
   color: #FFFFFF !important;
   background-color: rgba(255, 255, 255, 0.04) !important;
+  transform: translateX(1.5px) !important;
 }
 
-aside button.bg-brand-600\/90, 
 aside button.bg-brand-600 {
   background-color: #5B5BD6 !important;
   color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(91, 91, 214, 0.25) !important;
 }
 
-aside button.bg-brand-600\/90 svg,
-aside button.bg-brand-600 svg {
-  color: #FFFFFF !important;
-}
-
-/* Sidebar Text Overrides (Ensure always high contrast light text on dark sidebar background) */
+/* High Contrast Sidebar Text (Persistent Light Elements) */
 aside span,
 aside p,
 aside div,
@@ -148,35 +178,34 @@ aside .text-slate-500 {
   color: #64748B !important;
 }
 
-/* 2. Card Styling Override */
+/* 2. Custom Card Surface overrides */
 .glass-card {
   background-color: var(--card-bg) !important;
   border: 1px solid var(--card-border) !important;
   box-shadow: var(--shadow-sm) !important;
   border-radius: 16px !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  transition: all 0.2s ease-in-out !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .glass-card-hover:hover {
-  transform: translateY(-1.5px) !important;
+  transform: translateY(-2px) !important;
   box-shadow: var(--shadow-md) !important;
   border-color: rgba(91, 91, 214, 0.2) !important;
 }
 
 .dark .glass-card-hover:hover {
   border-color: rgba(91, 91, 214, 0.35) !important;
+  box-shadow: var(--shadow-lg) !important;
 }
 
-/* 3. Header Override */
+/* 3. Executive Navigation Header */
 header {
   background-color: var(--header-bg) !important;
   border-bottom: 1px solid var(--card-border) !important;
-  transition: all 0.2s ease-in-out !important;
+  transition: all 0.3s ease-in-out !important;
 }
 
-/* 4. Table Customizations */
+/* 4. Elegant Tables */
 table {
   background-color: var(--card-bg) !important;
 }
@@ -195,58 +224,52 @@ tbody tr {
 }
 
 tbody tr:nth-child(even) {
-  background-color: rgba(0, 0, 0, 0.01) !important;
+  background-color: rgba(0, 0, 0, 0.005) !important;
 }
 
 .dark tbody tr:nth-child(even) {
-  background-color: rgba(255, 255, 255, 0.01) !important;
+  background-color: rgba(255, 255, 255, 0.005) !important;
 }
 
 tbody tr:hover {
   background-color: var(--slate-900) !important;
 }
 
-/* 5. AI Conversation Pane Overrides */
-.bg-slate-950.flex-1.flex.flex-col.min-w-0 {
-  background-color: var(--chat-bg) !important;
-}
-
-/* AI Chat response boxes (Modern soft borders, no hard outline) */
+/* 5. Chat response cards (Clean design, soft drop shadows, borderless defaults) */
 .bg-slate-900\/50.text-slate-300 {
   background-color: var(--slate-900) !important;
   border: 1px solid var(--card-border) !important;
   color: var(--slate-200) !important;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02) !important;
+  box-shadow: var(--shadow-sm) !important;
+  border-radius: 16px !important;
 }
 
-/* 6. Settings Page Inputs */
+/* 6. Settings Inputs UI overrides */
 input[type="password"], input[type="text"] {
   background-color: var(--card-bg) !important;
   border: 1px solid var(--card-border) !important;
   color: var(--slate-200) !important;
-  transition: border-color 0.2s ease-in-out;
+  border-radius: 10px !important;
+  transition: all 0.2s ease-in-out;
 }
 
 input[type="password"]:focus, input[type="text"]:focus {
   border-color: #5B5BD6 !important;
+  box-shadow: 0 0 0 2px rgba(91, 91, 214, 0.15) !important;
 }
 
-/* Clean Markdown Tables in Chat */
-.grid.grid-cols-3.gap-2.py-1.text-xs.border-b.border-slate-850 {
-  border-color: var(--card-border) !important;
-}
-
-/* Recharts visual styles */
+/* Chart customizations */
 .recharts-cartesian-grid-horizontal line, 
 .recharts-cartesian-grid-vertical line {
   stroke: var(--card-border) !important;
-  stroke-opacity: 0.5;
+  stroke-opacity: 0.6;
 }
+
 .recharts-text {
   fill: var(--slate-400) !important;
 }
 
-/* Confetti alignment */
+/* Modal and Overlays alignment */
 canvas {
   z-index: 99999 !important;
 }

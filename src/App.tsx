@@ -16,22 +16,21 @@ import {
   DollarSign, 
   CheckCircle, 
   AlertTriangle, 
-  Eye, 
   ChevronRight, 
   Download, 
   Filter, 
-  Activity, 
   Key, 
   Sparkles, 
   Check, 
   Trash2, 
   Share2,
   X,
-  Shield,
   Palette,
-  Clock,
   ArrowUpRight,
-  Info
+  Info,
+  ExternalLink,
+  Kanban,
+  FileSpreadsheet
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -102,7 +101,7 @@ export default function App() {
         return (
           <div key={lineIdx} className="grid grid-cols-3 gap-2 py-1 text-[11px] border-b border-slate-200 dark:border-slate-800">
             {cols.map((col, colIdx) => (
-              <span key={colIdx} className={colIdx === 0 ? "font-bold text-slate-800 dark:text-slate-200" : "text-slate-500 dark:text-slate-400"}>
+              <span key={colIdx} className={colIdx === 0 ? "font-bold text-slate-800 dark:text-slate-200" : "text-slate-550 dark:text-slate-400"}>
                 {parseInlineBold(col)}
               </span>
             ))}
@@ -121,7 +120,7 @@ export default function App() {
         return <h3 key={lineIdx} className="text-xs font-bold text-slate-850 dark:text-slate-100 mb-1.5 mt-2">{parseInlineBold(trimmed.substring(4))}</h3>;
       }
 
-      // List items (remove asterisk entirely, format spacing)
+      // List items
       if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
         return (
           <li key={lineIdx} className="list-disc ml-5 text-slate-650 dark:text-slate-300 mb-0.5 leading-relaxed">
@@ -142,7 +141,7 @@ export default function App() {
 
       // Standard text line
       return (
-        <p key={lineIdx} className="mb-1 text-slate-700 dark:text-slate-300 leading-relaxed">
+        <p key={lineIdx} className="mb-1 text-slate-750 dark:text-slate-300 leading-relaxed">
           {parseInlineBold(trimmed)}
         </p>
       );
@@ -177,7 +176,7 @@ export default function App() {
   ]);
 
   // AI Chat States
-  const [chatMessages, setChatMessages] = useState<Array<{ sender: 'user' | 'agent'; text: string; time: string; citations?: string[]; chartData?: any }>>([
+  const [chatMessages, setChatMessages] = useState<Array<{ sender: 'user' | 'agent'; text: string; time: string }>>([
     { 
       sender: 'agent', 
       text: "Hello! I am your Skylark BI AI Assistant. I have indexed your live Monday.com boards (Deals and Work Orders). You can ask me questions about pipeline value, delayed projects, or get a summarized weekly update.", 
@@ -339,7 +338,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
           1. Answer the user's query using the data provided. Clean and normalize dates or naming anomalies.
           2. Link Deal Name in Deals to Associated Deal in Work Orders.
           3. Deliver executive BI insights. Highlight high-value projects at risk.
-          4. Format response in clear markdown headers and tables.
+          4. Format response in clear markdown headers and tables. Do not include raw asterisks.
         `;
 
         const result = await model.generateContent([systemPrompt, text]);
@@ -371,7 +370,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
     }
   };
 
-  // KPIs
+  // KPIs Calculations
   const totalPipelineValue = deals
     .filter(d => d.stage !== 'Lost' && d.stage !== 'Won')
     .reduce((sum, d) => sum + d.value, 0);
@@ -382,8 +381,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
 
   const activeWorkOrdersCount = workOrders.filter(w => w.status === 'In Progress').length;
   const delayedWorkOrdersCount = workOrders.filter(w => w.status === 'Delayed').length;
-  const winRatePercentage = Math.round((deals.filter(d => d.stage === 'Won').length / (deals.filter(d => d.stage === 'Won').length + deals.filter(d => d.stage === 'Lost').length)) * 100);
-
+  
   const pipelineHistory = [
     { value: 480000 }, { value: 520000 }, { value: 610000 }, { value: 550000 }, { value: 590000 }, { value: totalPipelineValue }
   ];
@@ -421,18 +419,18 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
   const healthScorePercentage = Math.max(0, 100 - (missingValuesCount * 4));
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-950 font-sans text-slate-100 transition-colors duration-200">
+    <div className="flex h-screen overflow-hidden bg-slate-950 font-sans text-slate-100 transition-colors duration-300">
       
-      {/* 1. Sidebar Navigation */}
-      <aside className="w-64 border-r border-slate-800/80 bg-slate-900/40 backdrop-blur-md flex flex-col justify-between shrink-0">
+      {/* 1. Sidebar Navigation (Floating Style Panel) */}
+      <aside className="w-68 m-4 rounded-2xl border border-slate-800/80 bg-slate-900/60 shadow-xl flex flex-col justify-between shrink-0 z-20 backdrop-blur-lg">
         <div>
           {/* Logo */}
           <div className="h-16 flex items-center px-6 border-b border-slate-800/60 justify-between">
             <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-brand-600/20">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-brand-600/25">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold text-sm bg-clip-text text-transparent bg-gradient-to-r from-slate-50 to-slate-200 uppercase tracking-wider">
+              <span className="font-extrabold text-[13px] bg-clip-text text-transparent bg-gradient-to-r from-slate-50 to-slate-200 uppercase tracking-wider">
                 Skylark BI AI
               </span>
             </div>
@@ -453,14 +451,14 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
             <button 
               onClick={handleManualSync}
               disabled={isSyncing}
-              className="p-1.5 rounded-lg border border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-white transition-all disabled:opacity-50"
+              className="p-1.5 rounded-lg border border-slate-850 hover:bg-slate-800 text-slate-400 hover:text-white transition-all disabled:opacity-50"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-brand-600' : ''}`} />
             </button>
           </div>
 
           {/* Navigation Links */}
-          <nav className="px-3 space-y-1">
+          <nav className="px-3 space-y-1.5">
             {[
               { id: 'dashboard', label: 'Executive Dashboard', icon: LayoutDashboard },
               { id: 'chat', label: 'AI Assistant', icon: Bot, badge: 'AI Native' },
@@ -477,23 +475,26 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 <button
                   key={item.id}
                   onClick={() => setCurrentTab(item.id)}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all group ${
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all group relative ${
                     isActive 
                       ? 'bg-brand-600 text-white shadow-lg shadow-brand-600/10' 
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/25'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/20'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
-                    <Icon className={`w-4 h-4 transition-all group-hover:translate-x-0.5 ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-200'}`} />
+                    <Icon className={`w-4 h-4 transition-all group-hover:scale-105 ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-200'}`} />
                     <span>{item.label}</span>
                   </div>
                   {item.badge && (
-                    <span className="text-[8px] px-1.5 py-0.5 rounded bg-brand-600/15 text-brand-400 border border-brand-600/20 font-bold uppercase">
+                    <span className="text-[8px] px-1.5 py-0.5 rounded bg-brand-600/20 text-brand-400 border border-brand-600/20 font-extrabold uppercase">
                       {item.badge}
                     </span>
                   )}
                   {item.alert && (
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                  )}
+                  {isActive && (
+                    <span className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-white rounded-r-md"></span>
                   )}
                 </button>
               );
@@ -502,8 +503,8 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
         </div>
 
         {/* Profile Footer */}
-        <div className="p-4 border-t border-slate-800/60 flex items-center space-x-3 bg-slate-900/10">
-          <div className="w-8 h-8 rounded-full bg-brand-600 flex items-center justify-center font-bold text-xs text-white">
+        <div className="p-4 border-t border-slate-800/60 flex items-center space-x-3 bg-slate-900/10 rounded-b-2xl">
+          <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-xs text-white">
             AA
           </div>
           <div className="flex-1 min-w-0 text-left">
@@ -514,15 +515,15 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
       </aside>
 
       {/* Main Workspace Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden my-4 mr-4 rounded-2xl border border-slate-850/80 bg-slate-900/10">
         
         {/* Header bar */}
-        <header className="h-16 border-b border-slate-850 px-6 flex items-center justify-between shrink-0 z-10 bg-slate-950/80 backdrop-blur-md">
+        <header className="h-16 px-6 flex items-center justify-between shrink-0 z-10 bg-slate-950/20 rounded-t-2xl border-b border-slate-850/60">
           <div className="flex items-center space-x-4 flex-1 max-w-md">
             {/* Global CMD+K trigger */}
             <div 
               onClick={() => setCommandPaletteOpen(true)}
-              className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-lg border border-slate-800 bg-slate-900/30 hover:border-slate-700 hover:bg-slate-900/50 cursor-pointer transition-all"
+              className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl border border-slate-800 bg-slate-900/35 hover:border-slate-700 hover:bg-slate-900/60 cursor-pointer transition-all"
             >
               <Search className="w-3.5 h-3.5 text-slate-500" />
               <span className="text-xs text-slate-500 flex-1 text-left">Search or run command...</span>
@@ -539,7 +540,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 setNotificationsOpen(!notificationsOpen);
                 setUnreadNotifications(0);
               }}
-              className="p-2 rounded-lg border border-slate-800 bg-slate-900/30 hover:bg-slate-800 text-slate-450 hover:text-white transition-all relative"
+              className="p-2 rounded-lg border border-slate-800 bg-slate-900/30 hover:bg-slate-800 text-slate-400 hover:text-white transition-all relative"
             >
               <Bell className="w-4 h-4" />
               {unreadNotifications > 0 && (
@@ -550,7 +551,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
             <button 
               onClick={handleManualSync}
               disabled={isSyncing}
-              className="flex items-center space-x-2 px-3.5 py-1.5 rounded-lg border border-slate-800 hover:bg-slate-800 text-xs font-bold text-slate-300 transition-all disabled:opacity-50"
+              className="flex items-center space-x-2 px-3.5 py-1.5 rounded-lg border border-slate-800 hover:bg-slate-800 text-xs font-bold text-slate-350 transition-all disabled:opacity-50"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-brand-600' : ''}`} />
               <span>Sync Monday</span>
@@ -561,7 +562,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 setCurrentTab('chat');
                 handleSendMessage("Generate a weekly leadership update summary.");
               }}
-              className="flex items-center space-x-2 px-4 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-xs font-bold text-white shadow-md shadow-brand-600/10 transition-all"
+              className="flex items-center space-x-2 px-4 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-xs font-bold text-white shadow shadow-brand-600/10 transition-all"
             >
               <Bot className="w-3.5 h-3.5" />
               <span>Ask AI Agent</span>
@@ -570,18 +571,18 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
         </header>
 
         {/* Tab Content Rendering */}
-        <main className="flex-1 overflow-y-auto p-6 min-h-0 bg-slate-950">
+        <main className="flex-1 overflow-y-auto p-6 min-h-0">
           
           {/* TAB 1: EXECUTIVE DASHBOARD */}
           {currentTab === 'dashboard' && (
-            <div className="space-y-6 max-w-7xl mx-auto">
+            <div className="space-y-6 max-w-7xl mx-auto animate-slide-up">
               
               {/* Header Greeting */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-850 pb-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-850/60 pb-6">
                 <div className="text-left">
-                  <h1 className="text-xl font-bold tracking-tight text-slate-100 flex items-center space-x-2">
+                  <h1 className="text-xl font-bold tracking-tight text-slate-200 flex items-center space-x-2.5">
                     <span>Executive Operations Center</span>
-                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-bold uppercase">
+                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-extrabold uppercase">
                       Enterprise BI
                     </span>
                   </h1>
@@ -604,27 +605,40 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 </div>
               </div>
 
+              {/* Glowing Recommendations Widget */}
+              <div className="glass-card p-5 border border-indigo-500/15 bg-indigo-500/5 rounded-2xl flex items-start space-x-4 text-left animate-glow-pulse">
+                <div className="w-9 h-9 rounded-xl bg-indigo-600/15 border border-indigo-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <Sparkles className="w-4 h-4 text-indigo-400" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider">AI Operations Insight Recommendation</h4>
+                  <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                    LiDAR sensor failures on the **NHAI Highway Mapping Corridor** project have halted operations. stand-by dispatch from Bangalore HQ has not been requested. **Action:** dispatch standby calibration tools within 24h to avoid $400k revenue recognition delay.
+                  </p>
+                </div>
+              </div>
+
               {/* KPI Cards Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 
                 {/* KPI Card 1: Pipeline */}
-                <div className="glass-card glass-card-hover p-5 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden group border-t-2 border-t-brand-600">
-                  <div className="absolute right-4 top-4 text-slate-300/40">
+                <div className="glass-card glass-card-hover p-5 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden group border-t-2 border-t-brand-600 bg-gradient-to-b from-brand-600/5 to-transparent">
+                  <div className="absolute right-4 top-4 text-slate-400/20">
                     <Briefcase className="w-7 h-7" />
                   </div>
                   <div>
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Active Pipeline</span>
-                    <h3 className="text-2xl font-bold text-slate-100 mt-1">${(totalPipelineValue / 1000).toFixed(0)}k</h3>
+                    <h3 className="text-2xl font-bold text-slate-100 mt-1 font-mono">${(totalPipelineValue / 1000).toFixed(0)}k</h3>
                   </div>
                   <div className="flex items-end justify-between mt-2">
-                    <span className="text-xs text-emerald-500 flex items-center space-x-0.5">
+                    <span className="text-xs text-emerald-500 flex items-center space-x-0.5 font-bold">
                       <TrendingUp className="w-3 h-3" />
                       <span>+12.4%</span>
                     </span>
                     <div className="w-20 h-8">
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={pipelineHistory}>
-                          <Area type="monotone" dataKey="value" stroke="#5B5BD6" fill="rgba(91, 91, 214, 0.03)" strokeWidth={1.5} />
+                          <Area type="monotone" dataKey="value" stroke="#5B5BD6" fill="rgba(91, 91, 214, 0.01)" strokeWidth={1.5} />
                         </AreaChart>
                       </ResponsiveContainer>
                     </div>
@@ -632,23 +646,23 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 </div>
 
                 {/* KPI Card 2: Revenue */}
-                <div className="glass-card glass-card-hover p-5 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden group border-t-2 border-t-indigo-600">
-                  <div className="absolute right-4 top-4 text-slate-300/40">
+                <div className="glass-card glass-card-hover p-5 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden group border-t-2 border-t-indigo-600 bg-gradient-to-b from-indigo-600/5 to-transparent">
+                  <div className="absolute right-4 top-4 text-slate-400/20">
                     <DollarSign className="w-7 h-7" />
                   </div>
                   <div>
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Closed Won Revenue</span>
-                    <h3 className="text-2xl font-bold text-slate-100 mt-1">${(closedWonRevenue / 1000000).toFixed(2)}M</h3>
+                    <h3 className="text-2xl font-bold text-slate-100 mt-1 font-mono">${(closedWonRevenue / 1000000).toFixed(2)}M</h3>
                   </div>
                   <div className="flex items-end justify-between mt-2">
-                    <span className="text-xs text-emerald-500 flex items-center space-x-0.5">
+                    <span className="text-xs text-emerald-500 flex items-center space-x-0.5 font-bold">
                       <TrendingUp className="w-3 h-3" />
                       <span>+8.2%</span>
                     </span>
                     <div className="w-20 h-8">
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={revenueHistory}>
-                          <Area type="monotone" dataKey="value" stroke="#7C3AED" fill="rgba(124, 58, 237, 0.03)" strokeWidth={1.5} />
+                          <Area type="monotone" dataKey="value" stroke="#7C3AED" fill="rgba(124, 58, 237, 0.01)" strokeWidth={1.5} />
                         </AreaChart>
                       </ResponsiveContainer>
                     </div>
@@ -656,8 +670,8 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 </div>
 
                 {/* KPI Card 3: Execution */}
-                <div className="glass-card glass-card-hover p-5 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden group border-t-2 border-t-emerald-500">
-                  <div className="absolute right-4 top-4 text-slate-300/40">
+                <div className="glass-card glass-card-hover p-5 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden group border-t-2 border-t-emerald-500 bg-gradient-to-b from-emerald-500/5 to-transparent">
+                  <div className="absolute right-4 top-4 text-slate-400/20">
                     <CheckCircle className="w-7 h-7" />
                   </div>
                   <div>
@@ -665,30 +679,28 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                     <h3 className="text-2xl font-bold text-slate-100 mt-1">{activeWorkOrdersCount} In Progress</h3>
                   </div>
                   <div className="flex items-end justify-between mt-2 text-xs">
-                    <span className="text-slate-400 font-medium">
+                    <span className="text-slate-400 font-semibold font-mono">
                       {workOrders.filter(w => w.status === 'Completed').length} Completed
                     </span>
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 font-bold uppercase text-[9px]">
+                    <span className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 font-extrabold uppercase text-[9px]">
                       Stable
                     </span>
                   </div>
                 </div>
 
                 {/* KPI Card 4: Risks */}
-                <div className="glass-card glass-card-hover p-5 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden group border-t-2 border-t-rose-500">
-                  <div className="absolute right-4 top-4 text-slate-300/40">
+                <div className="glass-card glass-card-hover p-5 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden group border-t-2 border-t-rose-500 bg-gradient-to-b from-rose-500/5 to-transparent">
+                  <div className="absolute right-4 top-4 text-slate-400/20">
                     <AlertTriangle className="w-7 h-7" />
                   </div>
                   <div>
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Operational Bottlenecks</span>
-                    <h3 className="text-2xl font-bold text-slate-100 mt-1">{delayedWorkOrdersCount} High Risk</h3>
+                    <h3 className="text-2xl font-bold text-slate-100 mt-1">{delayedWorkOrdersCount} Delayed</h3>
                   </div>
                   <div className="flex items-end justify-between mt-2 text-xs">
-                    <span className="text-rose-500 font-semibold flex items-center space-x-0.5">
-                      <span>Action required</span>
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full bg-rose-500/15 border border-rose-500/25 text-rose-500 font-bold uppercase text-[9px] animate-pulse">
-                      Urgent
+                    <span className="text-rose-500 font-bold">Action required</span>
+                    <span className="px-2 py-0.5 rounded bg-rose-500/15 border border-rose-500/25 text-rose-500 font-extrabold uppercase text-[9px] animate-pulse">
+                      Critical
                     </span>
                   </div>
                 </div>
@@ -700,14 +712,14 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 
                 {/* Sector analysis (col-span-2) */}
                 <div className="lg:col-span-2 glass-card p-6 rounded-2xl">
-                  <div className="flex items-center justify-between mb-6 border-b border-slate-850 pb-4">
+                  <div className="flex items-center justify-between mb-6 border-b border-slate-850/60 pb-4">
                     <div className="text-left">
                       <h3 className="text-sm font-bold text-slate-200">Pipeline Performance by Sector</h3>
                       <p className="text-[11px] text-slate-500 mt-0.5">Market capitalization of target drone operations</p>
                     </div>
                     <button 
                       onClick={() => setCurrentTab('analytics')}
-                      className="text-xs text-brand-600 hover:text-brand-500 font-semibold flex items-center space-x-1"
+                      className="text-xs text-brand-600 hover:text-brand-500 font-bold flex items-center space-x-1"
                     >
                       <span>Explore Analytics</span>
                       <ArrowUpRight className="w-3.5 h-3.5" />
@@ -743,7 +755,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                       <Bot className="w-4 h-4 text-brand-600" />
                       <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">AI Assistant Panel</h4>
                     </div>
-                    <p className="text-xs text-slate-500 leading-relaxed mb-4 text-left">
+                    <p className="text-xs text-slate-500 leading-relaxed mb-4 text-left font-medium">
                       Query your active pipeline, deal statuses, and operational risks in conversational language.
                     </p>
                     <div className="space-y-2">
@@ -754,9 +766,9 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                             setCurrentTab('chat');
                             handleSendMessage(prompt);
                           }}
-                          className="w-full text-left text-xs p-2.5 rounded-xl border border-slate-800 bg-slate-900/30 hover:border-brand-600/30 hover:bg-brand-600/5 transition-all text-slate-450 hover:text-slate-200 flex items-center justify-between"
+                          className="w-full text-left text-xs p-2.5 rounded-xl border border-slate-800 bg-slate-900/30 hover:border-brand-600/30 hover:bg-brand-600/5 transition-all text-slate-400 hover:text-slate-200 flex items-center justify-between"
                         >
-                          <span className="truncate mr-2 font-medium">{prompt}</span>
+                          <span className="truncate mr-2 font-semibold">{prompt}</span>
                           <ChevronRight className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                         </button>
                       ))}
@@ -775,7 +787,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                             act.type === 'deal' ? 'bg-violet-500' : 'bg-amber-500'
                           }`}></span>
                           <div className="flex-1 min-w-0">
-                            <p className="text-slate-350 leading-relaxed">{act.text}</p>
+                            <p className="text-slate-400 leading-relaxed">{act.text}</p>
                             <p className="text-[9px] text-slate-500 mt-1 font-mono">{act.time}</p>
                           </div>
                         </div>
@@ -792,7 +804,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
 
           {/* TAB 2: AI ASSISTANT CHAT */}
           {currentTab === 'chat' && (
-            <div className="h-full flex flex-col justify-between -m-6 bg-slate-950">
+            <div className="h-full flex flex-col justify-between -m-6 bg-slate-950/20 rounded-2xl animate-slide-up">
               
               {/* Chat Header */}
               <div className="h-14 border-b border-slate-850 px-6 flex items-center justify-between shrink-0 bg-slate-900/10">
@@ -835,14 +847,14 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
               <div className="flex-1 flex min-h-0 overflow-hidden">
                 
                 {/* Left Side: Pinned/Suggested */}
-                <div className="w-64 border-r border-slate-850 p-4 space-y-4 shrink-0 hidden md:block bg-slate-900/5">
+                <div className="w-64 border-r border-slate-850/60 p-4 space-y-4 shrink-0 hidden md:block bg-slate-900/5">
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider text-left">Suggested Queries</div>
                   <div className="space-y-2">
                     {suggestedPrompts.map((prompt, idx) => (
                       <button
                         key={idx}
                         onClick={() => handleSendMessage(prompt)}
-                        className="w-full text-left text-xs p-2.5 rounded-xl border border-slate-800 bg-slate-900/10 hover:border-slate-700 hover:bg-slate-900/40 text-slate-450 hover:text-slate-200 transition-all leading-relaxed font-medium"
+                        className="w-full text-left text-xs p-2.5 rounded-xl border border-slate-850 bg-slate-900/10 hover:border-slate-700 hover:bg-slate-900/40 text-slate-400 hover:text-slate-200 transition-all leading-relaxed font-semibold"
                       >
                         {prompt}
                       </button>
@@ -851,7 +863,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 </div>
 
                 {/* Middle: Chat Messages */}
-                <div className="flex-1 flex flex-col min-w-0 bg-slate-950">
+                <div className="flex-1 flex flex-col min-w-0 bg-slate-950/10">
                   
                   {/* Messages */}
                   <div className="flex-1 overflow-y-auto p-6 space-y-6">
@@ -881,11 +893,11 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                         <div className="w-8 h-8 rounded-lg bg-brand-600/10 border border-brand-600/20 flex items-center justify-center font-bold text-brand-600 shrink-0">
                           BI
                         </div>
-                        <div className="bg-slate-900 border border-slate-800/85 rounded-2xl rounded-tl-none p-4 max-w-sm">
+                        <div className="bg-slate-900 border border-slate-800/40 rounded-2xl rounded-tl-none p-4 max-w-sm">
                           <div className="flex items-center space-x-1.5">
-                            <span className="w-2.5 h-2.5 rounded-full bg-brand-600 animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                            <span className="w-2.5 h-2.5 rounded-full bg-brand-600 animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                            <span className="w-2.5 h-2.5 rounded-full bg-brand-600 animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                            <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '0ms' }}></span>
+                            <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '150ms' }}></span>
+                            <span className="w-2 h-2 rounded-full bg-brand-600 typing-dot" style={{ animationDelay: '300ms' }}></span>
                           </div>
                         </div>
                       </div>
@@ -893,7 +905,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   </div>
 
                   {/* Input form */}
-                  <div className="p-4 border-t border-slate-850 bg-slate-950">
+                  <div className="p-4 border-t border-slate-850 bg-slate-950/20">
                     <form 
                       onSubmit={(e) => {
                         e.preventDefault();
@@ -906,7 +918,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                         value={inputMessage}
                         onChange={(e) => setInputMessage(e.target.value)}
                         placeholder="Query pipeline statistics, logistics anomalies, or ask for updates..."
-                        className="w-full pl-4 pr-12 py-3 rounded-xl border border-slate-800 focus:border-brand-600 bg-slate-900/30 text-xs text-slate-200 placeholder-slate-500 focus:outline-none"
+                        className="w-full pl-4 pr-12 py-3 rounded-xl border border-slate-800 focus:border-brand-600 bg-slate-900/35 text-xs text-slate-200 placeholder-slate-500 focus:outline-none"
                       />
                       <button
                         type="submit"
@@ -930,10 +942,10 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
 
           {/* TAB 3: DEALS CRM */}
           {currentTab === 'deals' && (
-            <div className="space-y-6 max-w-7xl mx-auto">
+            <div className="space-y-6 max-w-7xl mx-auto animate-slide-up">
               
               {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-850 pb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-850/60 pb-6">
                 <div className="text-left">
                   <h1 className="text-lg font-bold tracking-tight text-slate-100">Enterprise CRM & Sales Pipeline</h1>
                   <p className="text-xs text-slate-500 mt-1">Live deal tracker synced with Monday.com Deals board</p>
@@ -942,15 +954,17 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   <div className="flex items-center space-x-1 rounded-lg border border-slate-800 bg-slate-900/30 p-1">
                     <button 
                       onClick={() => setDealViewMode('table')} 
-                      className={`text-xs px-3 py-1.5 rounded font-semibold transition-all ${dealViewMode === 'table' ? 'bg-slate-800 text-white' : 'text-slate-450 hover:text-slate-200'}`}
+                      className={`text-xs px-3 py-1.5 rounded font-bold transition-all flex items-center space-x-1 ${dealViewMode === 'table' ? 'bg-slate-800 text-white' : 'text-slate-450 hover:text-slate-200'}`}
                     >
-                      Table View
+                      <FileSpreadsheet className="w-3.5 h-3.5" />
+                      <span>Table View</span>
                     </button>
                     <button 
                       onClick={() => setDealViewMode('kanban')} 
-                      className={`text-xs px-3 py-1.5 rounded font-semibold transition-all ${dealViewMode === 'kanban' ? 'bg-slate-800 text-white' : 'text-slate-450 hover:text-slate-200'}`}
+                      className={`text-xs px-3 py-1.5 rounded font-bold transition-all flex items-center space-x-1 ${dealViewMode === 'kanban' ? 'bg-slate-800 text-white' : 'text-slate-450 hover:text-slate-200'}`}
                     >
-                      Kanban Board
+                      <Kanban className="w-3.5 h-3.5" />
+                      <span>Kanban Board</span>
                     </button>
                   </div>
                 </div>
@@ -965,7 +979,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                     value={globalSearchQuery}
                     onChange={(e) => setGlobalSearchQuery(e.target.value)}
                     placeholder="Search deals, clients..."
-                    className="w-full pl-9 pr-3 py-1.5 rounded-lg border border-slate-800 focus:border-brand-600 bg-slate-900/30 text-xs text-slate-250 focus:outline-none"
+                    className="w-full pl-9 pr-3 py-1.5 rounded-lg border border-slate-800 focus:border-brand-600 bg-slate-900/35 text-xs text-slate-250 focus:outline-none"
                   />
                 </div>
                 <div className="flex items-center space-x-2">
@@ -976,7 +990,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   <select
                     value={dealFilterStage}
                     onChange={(e) => setDealFilterStage(e.target.value)}
-                    className="px-2.5 py-1.5 rounded-lg border border-slate-800 bg-slate-900/50 text-xs text-slate-350 focus:outline-none"
+                    className="px-2.5 py-1.5 rounded-lg border border-slate-800 bg-slate-900/50 text-xs text-slate-300 focus:outline-none"
                   >
                     <option value="All">All Stages</option>
                     <option value="Lead">Lead</option>
@@ -991,7 +1005,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   <select
                     value={dealFilterSector}
                     onChange={(e) => setDealFilterSector(e.target.value)}
-                    className="px-2.5 py-1.5 rounded-lg border border-slate-800 bg-slate-900/50 text-xs text-slate-350 focus:outline-none"
+                    className="px-2.5 py-1.5 rounded-lg border border-slate-800 bg-slate-900/50 text-xs text-slate-300 focus:outline-none"
                   >
                     <option value="All">All Sectors</option>
                     <option value="Energy">Energy</option>
@@ -1031,32 +1045,32 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                           filteredDeals.map((deal) => (
                             <tr 
                               key={deal.id} 
-                              className="border-b border-slate-850 hover:bg-slate-900/30 transition-colors group cursor-pointer"
+                              className="border-b border-slate-850/60 hover:bg-slate-900/30 transition-colors group cursor-pointer"
                               onClick={() => setSelectedDeal(deal)}
                             >
                               <td className="p-4 font-bold text-slate-200 group-hover:text-brand-600 transition-colors">
                                 {deal.name}
                               </td>
-                              <td className="p-4 text-slate-300">{deal.customer}</td>
+                              <td className="p-4 text-slate-400">{deal.customer}</td>
                               <td className="p-4">
-                                <span className="px-2.5 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-semibold">
+                                <span className="px-2.5 py-0.5 rounded bg-slate-900/60 text-slate-400 border border-slate-850 text-[10px] font-semibold">
                                   {deal.sector}
                                 </span>
                               </td>
                               <td className="p-4 text-right font-mono font-bold text-slate-200">${deal.value.toLocaleString()}</td>
                               <td className="p-4">
-                                <span className={`px-2.5 py-0.5 rounded-full font-bold text-[10px] uppercase tracking-wide ${
+                                <span className={`px-2.5 py-0.5 rounded font-bold text-[10px] uppercase tracking-wide ${
                                   deal.stage === 'Won' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' :
                                   deal.stage === 'Lost' ? 'bg-rose-500/10 text-rose-500 border border-rose-500/20' :
                                   deal.stage === 'Negotiation' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' :
-                                  'bg-slate-800 text-slate-400'
+                                  'bg-slate-800 text-slate-450 border border-slate-700'
                                 }`}>
                                   {deal.stage}
                                 </span>
                               </td>
                               <td className="p-4">
                                 <div className="flex items-center space-x-1.5">
-                                  <div className="w-12 bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                                  <div className="w-12 bg-slate-805 rounded-full h-1.5 overflow-hidden">
                                     <div 
                                       className={`h-full rounded-full ${deal.stage === 'Won' ? 'bg-emerald-500' : 'bg-brand-600'}`} 
                                       style={{ width: `${deal.probability}%` }}
@@ -1065,8 +1079,8 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                                   <span className="font-mono text-[9px] text-slate-500">{deal.probability}%</span>
                                 </div>
                               </td>
-                              <td className="p-4 text-slate-400 font-mono">{deal.closeDate || 'N/A'}</td>
-                              <td className="p-4 text-slate-300">{deal.owner}</td>
+                              <td className="p-4 text-slate-500 font-mono">{deal.closeDate || 'N/A'}</td>
+                              <td className="p-4 text-slate-400">{deal.owner}</td>
                             </tr>
                           ))
                         )}
@@ -1084,7 +1098,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                     const stageSum = stageDeals.reduce((sum, d) => sum + d.value, 0);
                     return (
                       <div key={stage} className="bg-slate-900/35 border border-slate-850 rounded-2xl p-4 flex flex-col min-h-[400px]">
-                        <div className="flex items-center justify-between border-b border-slate-850 pb-3 mb-4">
+                        <div className="flex items-center justify-between border-b border-slate-850/60 pb-3 mb-4">
                           <div className="text-left">
                             <span className="text-xs font-bold text-slate-200">{stage}</span>
                             <span className="text-[10px] text-slate-500 ml-1.5 font-mono">({stageDeals.length})</span>
@@ -1099,7 +1113,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                               className="bg-slate-900 border border-slate-800 hover:border-brand-600/20 p-3.5 rounded-xl cursor-pointer transition-all hover:-translate-y-0.5 shadow-sm text-left"
                             >
                               <div className="flex items-center justify-between">
-                                <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-900 text-slate-500 font-mono uppercase font-bold">{deal.sector}</span>
+                                <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-955 text-slate-500 font-mono uppercase font-bold">{deal.sector}</span>
                                 <span className="text-[10px] font-mono font-bold text-slate-200">${(deal.value / 1000).toFixed(0)}k</span>
                               </div>
                               <h4 className="text-xs font-bold text-slate-200 mt-2 truncate">{deal.name}</h4>
@@ -1122,10 +1136,10 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
 
           {/* TAB 4: WORK ORDERS */}
           {currentTab === 'workorders' && (
-            <div className="space-y-6 max-w-7xl mx-auto">
+            <div className="space-y-6 max-w-7xl mx-auto animate-slide-up">
               
               {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-850 pb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-850/60 pb-6">
                 <div className="text-left">
                   <h1 className="text-lg font-bold tracking-tight text-slate-100">Operations & Execution Tracker</h1>
                   <p className="text-xs text-slate-500 mt-1">Status of scheduled drone missions and dataset deliverables</p>
@@ -1136,7 +1150,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                       <button 
                         key={mode}
                         onClick={() => setWorkOrderViewMode(mode as any)} 
-                        className={`text-xs px-3 py-1.5 rounded font-semibold capitalize transition-all ${workOrderViewMode === mode ? 'bg-slate-800 text-white' : 'text-slate-450 hover:text-slate-200'}`}
+                        className={`text-xs px-3 py-1.5 rounded font-bold capitalize transition-all ${workOrderViewMode === mode ? 'bg-slate-800 text-white' : 'text-slate-450 hover:text-slate-200'}`}
                       >
                         {mode}
                       </button>
@@ -1154,7 +1168,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                     value={globalSearchQuery}
                     onChange={(e) => setGlobalSearchQuery(e.target.value)}
                     placeholder="Search work orders..."
-                    className="w-full pl-9 pr-3 py-1.5 rounded-lg border border-slate-800 focus:border-brand-600 bg-slate-900/30 text-xs text-slate-250 focus:outline-none"
+                    className="w-full pl-9 pr-3 py-1.5 rounded-lg border border-slate-800 focus:border-brand-600 bg-slate-900/35 text-xs text-slate-250 focus:outline-none"
                   />
                 </div>
                 <div className="flex items-center space-x-2">
@@ -1165,7 +1179,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   <select
                     value={workOrderFilterStatus}
                     onChange={(e) => setWorkOrderFilterStatus(e.target.value)}
-                    className="px-2.5 py-1.5 rounded-lg border border-slate-800 bg-slate-900/50 text-xs text-slate-350 focus:outline-none"
+                    className="px-2.5 py-1.5 rounded-lg border border-slate-800 bg-slate-900/50 text-xs text-slate-300 focus:outline-none"
                   >
                     <option value="All">All Statuses</option>
                     <option value="Not Started">Not Started</option>
@@ -1203,7 +1217,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                           filteredWorkOrders.map((wo) => (
                             <tr 
                               key={wo.id} 
-                              className="border-b border-slate-850 hover:bg-slate-900/30 transition-colors group cursor-pointer"
+                              className="border-b border-slate-850/60 hover:bg-slate-900/30 transition-colors group cursor-pointer"
                               onClick={() => setSelectedWorkOrder(wo)}
                             >
                               <td className="p-4 font-mono font-bold text-slate-400 uppercase">{wo.id}</td>
@@ -1224,7 +1238,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                                   wo.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' :
                                   wo.status === 'Delayed' ? 'bg-rose-500/10 text-rose-500 border border-rose-500/20 animate-pulse' :
                                   wo.status === 'In Progress' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' :
-                                  'bg-slate-800 text-slate-500 border border-slate-700'
+                                  'bg-slate-800 text-slate-500 border border-slate-705'
                                 }`}>
                                   {wo.status}
                                 </span>
@@ -1245,7 +1259,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   <div className="text-xs font-semibold text-slate-400">Quarterly Target Schedules</div>
                   <div className="space-y-4">
                     {workOrders.map((wo, index) => (
-                      <div key={wo.id} className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-850 pb-3">
+                      <div key={wo.id} className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-850/60 pb-3">
                         <div className="w-64">
                           <h4 className="text-xs font-bold text-slate-200">{wo.associatedDeal}</h4>
                           <p className="text-[10px] text-slate-500 mt-0.5">Assigned to: {wo.assignedTeam}</p>
@@ -1265,9 +1279,9 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                           <span className="text-[10px] text-slate-400 font-mono w-20 text-right">{wo.targetEndDate}</span>
                         </div>
                         <div>
-                          <span className={`text-[9px] px-2.5 py-0.5 rounded-full font-bold uppercase ${
+                          <span className={`text-[9px] px-2.5 py-0.5 rounded font-bold uppercase ${
                             wo.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-500' :
-                            wo.status === 'Delayed' ? 'bg-rose-500/10 text-rose-500' : 'bg-slate-850 text-slate-500'
+                            wo.status === 'Delayed' ? 'bg-rose-500/10 text-rose-500 animate-pulse' : 'bg-slate-850 text-slate-500'
                           }`}>
                             {wo.status}
                           </span>
@@ -1283,10 +1297,10 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
 
           {/* TAB 5: VISUAL ANALYTICS */}
           {currentTab === 'analytics' && (
-            <div className="space-y-6 max-w-7xl mx-auto">
+            <div className="space-y-6 max-w-7xl mx-auto animate-slide-up">
               
               {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-850 pb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-850/60 pb-6">
                 <div className="text-left">
                   <h1 className="text-lg font-bold tracking-tight text-slate-100">Visual Analytics Analytics</h1>
                   <p className="text-xs text-slate-500 mt-1">Aggregated target KPIs and sales pipelines forecasts</p>
@@ -1296,7 +1310,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                     confetti({ particleCount: 50, spread: 80 });
                     alert("Dashboard summary data copied to clipboard!");
                   }}
-                  className="flex items-center space-x-1.5 px-3 py-2 rounded-lg border border-slate-800 hover:bg-slate-900 text-xs font-semibold text-slate-450 hover:text-slate-200 transition-colors self-start sm:self-center"
+                  className="flex items-center space-x-1.5 px-3 py-2 rounded-lg border border-slate-800 hover:bg-slate-900 text-xs font-bold text-slate-400 hover:text-slate-200 transition-colors self-start sm:self-center"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Export Analytics</span>
@@ -1321,7 +1335,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                         <XAxis dataKey="name" stroke="#64748b" fontSize={11} tickLine={false} />
                         <YAxis stroke="#64748b" fontSize={11} tickLine={false} axisLine={false} />
                         <Tooltip contentStyle={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '12px' }} />
-                        <Area type="monotone" dataKey="value" stroke="#5B5BD6" fill="rgba(91, 91, 214, 0.05)" strokeWidth={2} />
+                        <Area type="monotone" dataKey="value" stroke="#5B5BD6" fill="rgba(91, 91, 214, 0.03)" strokeWidth={2} />
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
@@ -1363,10 +1377,10 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                         { label: 'Delayed', color: 'bg-rose-500', count: workOrders.filter(w => w.status === 'Delayed').length },
                         { label: 'Not Started', color: 'bg-slate-500', count: workOrders.filter(w => w.status === 'Not Started').length }
                       ].map((item, idx) => (
-                        <div key={idx} className="flex items-center justify-between border-b border-slate-850 pb-1.5 text-left">
+                        <div key={idx} className="flex items-center justify-between border-b border-slate-850/60 pb-1.5 text-left">
                           <div className="flex items-center space-x-2">
                             <span className={`w-2.5 h-2.5 rounded-full ${item.color}`}></span>
-                            <span className="text-slate-400 font-semibold">{item.label}</span>
+                            <span className="text-slate-400 font-bold">{item.label}</span>
                           </div>
                           <span className="font-bold text-slate-200 font-mono">{item.count} items</span>
                         </div>
@@ -1382,10 +1396,10 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
 
           {/* TAB 6: EXECUTIVE REPORTS */}
           {currentTab === 'reports' && (
-            <div className="space-y-6 max-w-7xl mx-auto">
+            <div className="space-y-6 max-w-7xl mx-auto animate-slide-up">
               
               {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-850 pb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-850/60 pb-6">
                 <div className="text-left">
                   <h1 className="text-lg font-bold tracking-tight text-slate-100">Executive Briefing Generator</h1>
                   <p className="text-xs text-slate-500 mt-1">Compile comprehensive slide/PDF summaries for leadership review</p>
@@ -1394,7 +1408,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
 
               {/* Reports builder */}
               <div className="glass-card p-6 rounded-2xl max-w-3xl mx-auto space-y-8 bg-slate-900/10">
-                <div className="flex items-center justify-between border-b border-slate-850 pb-4">
+                <div className="flex items-center justify-between border-b border-slate-850/60 pb-4">
                   <div className="flex items-center space-x-3 text-left">
                     <FileText className="w-5 h-5 text-brand-600" />
                     <div>
@@ -1411,28 +1425,28 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   </button>
                 </div>
 
-                <div className="space-y-6 text-xs text-slate-350 leading-relaxed text-left printable-report">
+                <div className="space-y-6 text-xs text-slate-300 leading-relaxed text-left">
                   <div>
-                    <h4 className="text-[10px] font-bold text-slate-200 uppercase tracking-wider mb-2 font-mono">1. Executive Summary</h4>
+                    <h4 className="text-[10px] font-bold text-slate-250 uppercase tracking-wider mb-2 font-mono">1. Executive Summary</h4>
                     <p>
                       This reporting cycle outlines the transition of several key pilot surveys into contract execution. Skylark Drones' core platforms recorded total completed revenue of **$1.06M**, driven by volume assessments in the mining division. While pipeline strength remains robust at **$610k**, operational delays in our highway mapping corridors highlight key equipment logistics vulnerabilities that require mitigation.
                     </p>
                   </div>
                   
                   <div>
-                    <h4 className="text-[10px] font-bold text-slate-200 uppercase tracking-wider mb-2 font-mono">2. Pipeline Analysis</h4>
+                    <h4 className="text-[10px] font-bold text-slate-250 uppercase tracking-wider mb-2 font-mono">2. Pipeline Analysis</h4>
                     <p>
                       Active negotiations represent **$610k** in pipeline volume. The renewables sector remains our most active sector, representing 52% of pipeline value. Contract conversions remain healthy with a 78% win rate over 90 days.
                     </p>
                   </div>
 
                   <div>
-                    <h4 className="text-[10px] font-bold text-slate-200 uppercase tracking-wider mb-2.5 font-mono">3. Primary Strategic Risks</h4>
-                    <div className="p-4 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-300 flex items-start space-x-3 text-left">
+                    <h4 className="text-[10px] font-bold text-slate-250 uppercase tracking-wider mb-2.5 font-mono">3. Primary Strategic Risks</h4>
+                    <div className="p-4 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-350 flex items-start space-x-3 text-left">
                       <AlertTriangle className="w-4 h-4 text-rose-500 mt-0.5 shrink-0" />
                       <div>
                         <p className="font-bold text-slate-200">NHAI Corridor Mapping Project Delivery (ID: wo3)</p>
-                        <p className="mt-1 text-[11px] text-rose-400">
+                        <p className="mt-1 text-[11px] text-rose-450">
                           Equipment failure has halted Day 3 LiDAR operations. Standard replacement dispatch timeline stands at 15 days, impacting first phase milestone collections ($400,000 billing schedule).
                         </p>
                       </div>
@@ -1440,7 +1454,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   </div>
 
                   <div>
-                    <h4 className="text-[10px] font-bold text-slate-200 uppercase tracking-wider mb-2 font-mono">4. Action Items & Next Steps</h4>
+                    <h4 className="text-[10px] font-bold text-slate-250 uppercase tracking-wider mb-2 font-mono">4. Action Items & Next Steps</h4>
                     <ul className="list-decimal ml-4 space-y-1.5 text-slate-400">
                       <li>Authorize backup LiDAR sensor allocation dispatch from Bangalore HQ immediately.</li>
                       <li>Finalize commercial contract negotiations for the **Adani Wind Farm Mapping** ($320k, currently in legal).</li>
@@ -1455,24 +1469,45 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
 
           {/* TAB 7: DATA QUALITY */}
           {currentTab === 'dataquality' && (
-            <div className="space-y-6 max-w-7xl mx-auto">
+            <div className="space-y-6 max-w-7xl mx-auto animate-slide-up">
               
               {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-850 pb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-850/60 pb-6">
                 <div className="text-left">
-                  <h1 className="text-lg font-bold tracking-tight text-slate-100">Monday.com Data Integrity Audit</h1>
-                  <p className="text-xs text-slate-500 mt-1">Audit logs flagging missing fields, mismatched dates, and schema deviations</p>
+                  <h1 className="text-lg font-bold tracking-tight text-slate-200">Monday.com Data Integrity Audit</h1>
+                  <p className="text-xs text-slate-555 mt-1 font-medium">Audit logs flagging missing fields, mismatched dates, and schema deviations</p>
                 </div>
               </div>
 
               {/* Data quality cards */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 
+                {/* Visual SVG health ring */}
                 <div className="glass-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
-                  <div className="w-24 h-24 rounded-full border-4 border-brand-600/20 border-t-brand-600 flex items-center justify-center font-bold text-xl text-brand-400">
-                    {healthScorePercentage}%
+                  <div className="relative w-24 h-24 flex items-center justify-center">
+                    <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                      <path
+                        className="text-slate-200 dark:text-slate-800"
+                        strokeWidth="2.5"
+                        stroke="currentColor"
+                        fill="none"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      />
+                      <path
+                        className="text-brand-600 transition-all duration-1000 ease-out"
+                        strokeDasharray={`${healthScorePercentage}, 100`}
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        stroke="currentColor"
+                        fill="none"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                      />
+                    </svg>
+                    <div className="absolute flex flex-col items-center justify-center">
+                      <span className="text-lg font-bold text-slate-800 dark:text-slate-100 font-mono">{healthScorePercentage}%</span>
+                    </div>
                   </div>
-                  <h3 className="text-xs font-bold text-slate-250 uppercase tracking-wider mt-4">Database Health Index</h3>
+                  <h3 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mt-4">Database Health Index</h3>
                   <p className="text-[10px] text-slate-500 mt-1">Weighted metric auditing empty fields and relation integrity</p>
                 </div>
 
@@ -1480,12 +1515,12 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                   <div>
                     <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-4">Integrity Violations Summary</h3>
                     <div className="space-y-2.5 text-xs">
-                      <div className="flex items-center justify-between py-1.5 border-b border-slate-850">
+                      <div className="flex items-center justify-between py-1.5 border-b border-slate-850/60">
                         <span className="text-slate-400">Total Empty Columns Audited:</span>
                         <span className="font-mono text-slate-200">{missingValuesCount} columns</span>
                       </div>
-                      <div className="flex items-center justify-between py-1.5 border-b border-slate-850">
-                        <span className="text-slate-400">Broken Deal-to-WorkOrder Relations:</span>
+                      <div className="flex items-center justify-between py-1.5 border-b border-slate-850/60">
+                        <span className="text-slate-400">Broken Relations:</span>
                         <span className="font-mono text-emerald-500">0 integrity errors</span>
                       </div>
                       <div className="flex items-center justify-between py-1.5">
@@ -1499,7 +1534,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                       alert("Executing programmatic data cleaning script. Inconsistent formats normalized!");
                       confetti({ particleCount: 30, spread: 50 });
                     }}
-                    className="w-full mt-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-bold text-slate-200 rounded-xl transition-all"
+                    className="w-full mt-4 py-2 bg-slate-900 hover:bg-slate-850 border border-slate-800 text-xs font-bold text-slate-200 rounded-xl transition-all"
                   >
                     Normalize & Fix Inconsistent Date Formats
                   </button>
@@ -1512,18 +1547,18 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-4">Audit Logs</h3>
                 <div className="space-y-3 text-xs">
                   {deals.filter(d => !d.closeDate).map(deal => (
-                    <div key={deal.id} className="flex items-center justify-between border-b border-slate-850 pb-2 text-slate-300">
+                    <div key={deal.id} className="flex items-center justify-between border-b border-slate-850/60 pb-2 text-slate-350">
                       <div className="flex items-center space-x-2">
-                        <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+                        <AlertTriangle className="w-3.5 h-3.5 text-amber-500 font-bold" />
                         <span>Deal <strong>{deal.name}</strong> is missing a target **Close Date** in Monday.com.</span>
                       </div>
                       <span className="text-[10px] text-slate-500 font-mono">Flagged</span>
                     </div>
                   ))}
                   {workOrders.filter(w => !w.notes).map(wo => (
-                    <div key={wo.id} className="flex items-center justify-between border-b border-slate-850 pb-2 text-slate-300">
+                    <div key={wo.id} className="flex items-center justify-between border-b border-slate-850/60 pb-2 text-slate-350">
                       <div className="flex items-center space-x-2">
-                        <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+                        <AlertTriangle className="w-3.5 h-3.5 text-amber-500 font-bold" />
                         <span>Work Order <strong>{wo.id.toUpperCase()}</strong> contains empty log **Notes** column.</span>
                       </div>
                       <span className="text-[10px] text-slate-500 font-mono">Flagged</span>
@@ -1541,10 +1576,10 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
 
           {/* TAB 8: SETTINGS & INTEGRATIONS */}
           {currentTab === 'settings' && (
-            <div className="max-w-7xl mx-auto space-y-6">
+            <div className="max-w-7xl mx-auto space-y-6 animate-slide-up">
               
               {/* Header */}
-              <div className="border-b border-slate-850 pb-6 text-left">
+              <div className="border-b border-slate-850/60 pb-6 text-left">
                 <h1 className="text-xl font-bold tracking-tight text-slate-100">System Integration Settings</h1>
                 <p className="text-xs text-slate-500 mt-1">Configure credentials, refresh intervals, and API endpoints</p>
               </div>
@@ -1569,7 +1604,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                         className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-start space-x-3.5 group ${
                           isSecActive 
                             ? 'border-brand-600 bg-brand-600/5 text-slate-100 shadow-sm' 
-                            : 'border-slate-850 bg-slate-900/10 hover:border-slate-700 text-slate-400 hover:text-slate-200'
+                            : 'border-slate-850 bg-slate-900/10 hover:border-slate-705 text-slate-400 hover:text-slate-200'
                         }`}
                       >
                         <Icon className={`w-5 h-5 shrink-0 mt-0.5 ${isSecActive ? 'text-brand-600' : 'text-slate-500 group-hover:text-slate-400'}`} />
@@ -1606,7 +1641,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                               localStorage.setItem('mondayToken', e.target.value);
                             }}
                             placeholder="Paste monday.com API v2 token..."
-                            className="w-full pl-10 pr-4 py-3 rounded-xl focus:ring-1 focus:ring-brand-600 focus:border-brand-600"
+                            className="w-full pl-10 pr-4 py-3 rounded-xl focus:ring-1 focus:ring-brand-600 focus:border-brand-600 text-xs"
                           />
                         </div>
                         <p className="text-[10px] text-slate-500 leading-relaxed">
@@ -1627,7 +1662,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                               localStorage.setItem('geminiApiKey', e.target.value);
                             }}
                             placeholder="Paste Google AI Studio API Key..."
-                            className="w-full pl-10 pr-4 py-3 rounded-xl focus:ring-1 focus:ring-brand-600 focus:border-brand-600"
+                            className="w-full pl-10 pr-4 py-3 rounded-xl focus:ring-1 focus:ring-brand-600 focus:border-brand-600 text-xs"
                           />
                         </div>
                         <p className="text-[10px] text-slate-500 leading-relaxed">
@@ -1665,7 +1700,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                             alert("Cache successfully flushed.");
                             confetti({ particleCount: 15 });
                           }}
-                          className="px-3.5 py-2 border border-slate-800 hover:bg-slate-900 text-slate-300 font-bold rounded-lg transition-colors text-xs"
+                          className="px-3.5 py-2 border border-slate-800 hover:bg-slate-900 text-slate-350 font-bold rounded-lg transition-colors text-xs"
                         >
                           Clear Cache
                         </button>
@@ -1726,12 +1761,12 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
           </div>
           <div className="flex-1 overflow-y-auto p-4 space-y-3 text-xs">
             <div className="p-3.5 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-350">
-              <p className="font-bold text-slate-200">Equipment Calibration Failure</p>
+              <p className="font-bold text-slate-250">Equipment Calibration Failure</p>
               <p className="text-slate-400 mt-1 leading-relaxed">Work order wo3 (NHAI Highway Mapping) flagged as Delayed due to LiDAR sensor failures.</p>
               <span className="text-[9px] text-slate-500 font-mono block mt-2">2 hours ago</span>
             </div>
             <div className="p-3.5 rounded-xl border border-slate-800 bg-slate-900/40 text-slate-350">
-              <p className="font-bold text-slate-200">Weekly Executive Report Generated</p>
+              <p className="font-bold text-slate-250">Weekly Executive Report Generated</p>
               <p className="text-slate-400 mt-1 leading-relaxed">The AI Business Assistant generated this week's Executive Briefing report successfully.</p>
               <span className="text-[9px] text-slate-500 font-mono block mt-2">4 hours ago</span>
             </div>
@@ -1742,7 +1777,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
       {/* 3. CMD+K Palette Modal */}
       {commandPaletteOpen && (
         <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-start justify-center pt-24 z-50 p-4">
-          <div className="w-full max-w-lg bg-slate-900 border border-slate-800 shadow-2xl rounded-2xl overflow-hidden">
+          <div className="w-full max-w-lg bg-slate-900 border border-slate-800 shadow-2xl rounded-2xl overflow-hidden animate-slide-up">
             <div className="p-3 border-b border-slate-800 flex items-center space-x-3.5">
               <Search className="w-4 h-4 text-slate-400" />
               <input
@@ -1783,7 +1818,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                     cmd.action();
                     setCommandPaletteOpen(false);
                   }}
-                  className="w-full text-left p-2.5 rounded-xl hover:bg-slate-800/60 text-slate-450 hover:text-slate-100 transition-colors flex items-center justify-between"
+                  className="w-full text-left p-2.5 rounded-xl hover:bg-slate-800/60 text-slate-400 hover:text-slate-100 transition-colors flex items-center justify-between"
                 >
                   <span>{cmd.label}</span>
                   <span className="text-[9px] text-slate-600 font-mono">Enter</span>
@@ -1796,8 +1831,8 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
 
       {/* 4. Deal Details Modal */}
       {selectedDeal && (
-        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-xl bg-slate-900 border border-slate-800 shadow-2xl rounded-2xl overflow-hidden flex flex-col justify-between max-h-[90vh]">
+        <div className="fixed inset-0 bg-slate-955/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="w-full max-w-xl bg-slate-900 border border-slate-800 shadow-2xl rounded-2xl overflow-hidden flex flex-col justify-between max-h-[90vh] animate-slide-up">
             <div className="p-5 border-b border-slate-800 flex items-center justify-between text-left">
               <div className="flex items-center space-x-2.5">
                 <span className="text-[9px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-mono uppercase font-bold">{selectedDeal.sector}</span>
@@ -1827,7 +1862,7 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
                 </div>
                 <div className="p-3 rounded-xl border border-slate-800 bg-slate-900/30">
                   <p className="text-[9px] text-slate-500 font-mono uppercase">Client / Partner</p>
-                  <p className="text-xs font-bold text-slate-200 mt-1 truncate">{selectedDeal.customer}</p>
+                  <p className="text-xs font-bold text-slate-250 mt-1 truncate">{selectedDeal.customer}</p>
                 </div>
               </div>
 
@@ -1885,8 +1920,8 @@ Please set a **Gemini API Key** in the **Settings** tab if you would like full g
 
       {/* 5. Work Order Details Modal */}
       {selectedWorkOrder && (
-        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-xl bg-slate-900 border border-slate-800 shadow-2xl rounded-2xl overflow-hidden flex flex-col justify-between max-h-[90vh]">
+        <div className="fixed inset-0 bg-slate-955/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="w-full max-w-xl bg-slate-900 border border-slate-800 shadow-2xl rounded-2xl overflow-hidden flex flex-col justify-between max-h-[90vh] animate-slide-up">
             <div className="p-5 border-b border-slate-800 flex items-center justify-between text-left">
               <div className="flex items-center space-x-2.5">
                 <span className="text-[9px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-mono uppercase font-bold">{selectedWorkOrder.id}</span>
